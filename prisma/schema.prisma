@@ -10,33 +10,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model schedules {
+model Schedules {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  slug      String   @unique
-  title     String
+  service   String   @unique
+  date      DateTime
   body      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  name      user     @relation(fields: [nameId], references: [id])
-  nameId   String  @db.ObjectId
-  barber   barber? @relation(fields: [barberId], references: [id])
-  barberId String? @db.ObjectId
+  name      User     @relation(fields: [nameId], references: [id])
+  nameId    String   @db.ObjectId
+  barber    Barber?  @relation(fields: [barberId], references: [id])
+  barberId  String?  @db.ObjectId
 }
 
-model user {
+model User {
   id        String      @id @default(auto()) @map("_id") @db.ObjectId
   email     String      @unique
   name      String
-  phone     String?
-  nasc      DateTime?
+  phone     String
+  birth     DateTime?
   Passwd    String?
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
-  address   Address?
-  posts     schedules[]
+  posts     Schedules[]
+
+  @@map("client")
 }
 
-model barber {
+model Barber {
   id        String      @id @default(auto()) @map("_id") @db.ObjectId
   email     String      @unique
   name      String
@@ -47,7 +48,7 @@ model barber {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   address   Address?
-  posts     schedules[]
+  posts     Schedules[]
 }
 
 // Address is an embedded document

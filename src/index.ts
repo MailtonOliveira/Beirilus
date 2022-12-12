@@ -1,15 +1,15 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../src/database/prismaClient";
 import express from "express";
 import { Request, Response } from "express";
-import cors from "cors"
-
-const prisma = new PrismaClient();
+import cors from "cors";
+import routes from "./routes";
 
 async function main() {
   const app = express();
   app.use(cors());
   app.use(express.json());
-  
+  app.use(routes);
+
   app.listen(3000, async () => {
     console.log(`🚀 Service started and listening at: http://127.0.0.1:3000`);
     try {
@@ -17,36 +17,23 @@ async function main() {
       console.log(`😄 Connected successfuly to the database!`);
 
       app.get("/", (req: Request, res: Response) => {
-        res.json({ message: "Servidor funcionando com sucesso" });
-    });
-
-    app.get("/healthz", (req: Request, res: Response) => {
-        res.status(200).json({ message: "Servidor funcionando com sucesso" });
-    });
-
-    app.get("/pop", async (req: Request, res: Response) => {
-     
-      await prisma.user.create({
-          data: {
-              name: 'Rich',
-              email: 'hello@prisma.com',
-          },
+        res.json({ message: "Server working successfully" });
       });
-      res.json({ message: "Usuário criado com sucesso!" });    
-      }); 
+
+      app.get("/healthz", (req: Request, res: Response) => {
+        res.status(200).json({ message: "Server working successfully" });
+      });
 
       app.get("/get-all", async (req: Request, res: Response) => {
         const users = await prisma.user.findMany({
-            include: {
-                posts: true
-            }
-            
+          include: {
+            posts: true,
+          },
         });
         res.json({ message: "Usuários recuperados com sucesso!", users });
-    });
+      });
     } catch (error) {}
   });
-
 }
 
 main().catch(async (e) => {
