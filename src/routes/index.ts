@@ -5,6 +5,8 @@ const routes = express.Router();
 
 const user = new userController
 
-routes.post("/client", user.createUser);
+routes.get("/clients", user.listUsers);
+routes.post("/client/create", user.createUser);
+
 
 export default routes;

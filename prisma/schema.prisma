@@ -13,14 +13,14 @@ datasource db {
 model Schedules {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   service   String   @unique
-  date      DateTime
-  body      String
+  date      DateTime?
+  body      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name      User     @relation(fields: [nameId], references: [id])
   nameId    String   @db.ObjectId
-  barber    Barber?  @relation(fields: [barberId], references: [id])
-  barberId  String?  @db.ObjectId
+  barber    Barber  @relation(fields: [barberId], references: [id])
+  barberId  String  @db.ObjectId
 }
 
 model User {
