@@ -1,5 +1,7 @@
-import { prisma } from "../database/prismaClient";
+import { PrismaClient } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
+
+const prisma = new PrismaClient();
 
 class userController {
   async createUser(req: Request, res: Response, next: NextFunction) {
@@ -10,14 +12,14 @@ class userController {
           email,
           name,
           phone,
-          birth
+          birth,
         },
       });
-      res.status(201).json(userCreate)
+      res.status(201).json(userCreate);
     } catch (error) {
       next(error);
     }
   }
-};
+}
 
-export default userController
+export default userController;

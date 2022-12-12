@@ -1,8 +1,10 @@
-import { prisma } from "../src/database/prismaClient";
+import { PrismaClient } from "@prisma/client";
 import express from "express";
 import { Request, Response } from "express";
 import cors from "cors";
 import routes from "./routes";
+
+const prisma = new PrismaClient();
 
 async function main() {
   const app = express();
