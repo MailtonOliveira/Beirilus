@@ -16,30 +16,28 @@ model Booking {
   hours      DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String   @db.ObjectId
+  customer   User     @relation(fields: [customerId], references: [id])
+  customerId String   @db.ObjectId
   Services   Services @relation(fields: [servicesId], references: [id])
   servicesId String   @db.ObjectId
-  Employee   Employee @relation(fields: [employeeId], references: [id])
-  employeeId String   @db.ObjectId
-
+  baber      Employee @relation(fields: [baberId], references: [id])
+  baberId    String   @db.ObjectId
 }
 
 model User {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
-  email      String     @unique
-  name       String
-  phone      String
-  birth      DateTime?
-  Passwd     String?
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  booking    Booking[]
-  TypeUser   TypeUser?  @relation(fields: [typeUserId], references: [id])
-  typeUserId String?    @db.ObjectId
-  employee   Employee[]
-  Shift      Shift?     @relation(fields: [shiftId], references: [id])
-  shiftId    String?    @db.ObjectId
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  email     String     @unique
+  name      String
+  phone     String
+  birth     DateTime
+  passwd    String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  booking   Booking[]
+  employee  Employee[]
+  typeUser  TypeUser[]
+  Shift     Shift?     @relation(fields: [shiftId], references: [id])
+  shiftId   String?    @db.ObjectId
 
   @@map("client")
 }
@@ -48,16 +46,16 @@ model Employee {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  booking   Booking[]
   User      User?     @relation(fields: [userId], references: [id])
   userId    String?   @db.ObjectId
+  booking   Booking[]
 }
 
 model Services {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  price       String    @unique
+  price       String
   description String
-  time        String
+  duration    DateTime
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   booking     Booking[]
@@ -70,16 +68,17 @@ model TypeUser {
   type      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User[]
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?  @db.ObjectId
 }
 
 model Shift {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   weekDay   String
   start     String
   end       String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   user      User[]
 }
 
@@ -88,7 +87,7 @@ model Config {
   mail_host        String
   mail_port        String
   mail_username    String
-  mail_pass        String
+  mail_passwd      String
   mail_displayname String
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
