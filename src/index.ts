@@ -25,15 +25,7 @@ async function main() {
       app.get("/healthz", (req: Request, res: Response) => {
         res.status(200).json({ message: "Server working successfully" });
       });
-
-      app.get("/get-all", async (req: Request, res: Response) => {
-        const users = await prisma.user.findMany({
-          include: {
-            posts: true,
-          },
-        });
-        res.json({ message: "Usuários recuperados com sucesso!", users });
-      });
+      
     } catch (error) {}
   });
 }
