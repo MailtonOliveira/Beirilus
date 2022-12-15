@@ -8,8 +8,8 @@ const prisma = new PrismaClient();
 class userController {
   async listUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const listingUsers = await prisma.user.findMany();
-      res.json({ listingUsers });
+      const listUsers = await prisma.user.findMany();
+      res.json({ listUsers });
     } catch (error) {
       next(error);
     }
