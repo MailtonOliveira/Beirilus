@@ -10,53 +10,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Schedules {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  date       DateTime? @unique
+model Booking {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  date       DateTime @unique
   hours      DateTime
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  user       User      @relation(fields: [userId], references: [id])
-  userId     String    @db.ObjectId
-  Services   Services? @relation(fields: [servicesId], references: [id])
-  servicesId String?   @db.ObjectId
-  Employee   Employee? @relation(fields: [employeeId], references: [id])
-  employeeId String?   @db.ObjectId
-  Shift      Shift?    @relation(fields: [shiftId], references: [id])
-  shiftId    String?   @db.ObjectId
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @db.ObjectId
+  Services   Services @relation(fields: [servicesId], references: [id])
+  servicesId String   @db.ObjectId
+  Employee   Employee @relation(fields: [employeeId], references: [id])
+  employeeId String   @db.ObjectId
+
 }
 
 model User {
-  id         String      @id @default(auto()) @map("_id") @db.ObjectId
-  email      String      @unique
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  email      String     @unique
   name       String
   phone      String
   birth      DateTime?
   Passwd     String?
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  Schedules  Schedules[]
-  TypeUser   TypeUser?   @relation(fields: [typeUserId], references: [id])
-  typeUserId String?     @db.ObjectId
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  booking    Booking[]
+  TypeUser   TypeUser?  @relation(fields: [typeUserId], references: [id])
+  typeUserId String?    @db.ObjectId
+  employee   Employee[]
+  Shift      Shift?     @relation(fields: [shiftId], references: [id])
+  shiftId    String?    @db.ObjectId
 
   @@map("client")
 }
 
 model Employee {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  schedules Schedules[]
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  booking   Booking[]
+  User      User?     @relation(fields: [userId], references: [id])
+  userId    String?   @db.ObjectId
 }
 
 model Services {
-  id          String      @id @default(auto()) @map("_id") @db.ObjectId
-  price       String      @unique
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  price       String    @unique
   description String
   time        String
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  Schedules   Schedules[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  booking     Booking[]
 
   @@map("Services")
 }
@@ -70,13 +74,13 @@ model TypeUser {
 }
 
 model Shift {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
   weekDay   String
   start     String
   end       String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  Schedules Schedules[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User[]
 }
 
 model Config {
