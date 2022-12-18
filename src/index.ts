@@ -1,8 +1,11 @@
+import { ERRORS } from './constants/errors';
+import { SUCCESS } from './constants/success';
 import { PrismaClient } from "@prisma/client";
 import express from "express";
 import { Request, Response } from "express";
 import cors from "cors";
 import routes from "./routes";
+import handleError from "./middlewares/handleError";
 
 const prisma = new PrismaClient();
 
@@ -11,22 +14,25 @@ async function main() {
   app.use(cors());
   app.use(express.json());
   app.use(routes);
+  app.use(handleError);
 
   app.listen(3000, async () => {
-    console.log(`🚀 Service started and listening at: http://127.0.0.1:3000`);
+    console.log(SUCCESS.APP.SERVEROK);
     try {
       await prisma.$connect();
-      console.log(`😄 Connected successfuly to the database!`);
+      console.log(SUCCESS.DATABASE.HASCONECTIONOK);
 
       app.get("/", (req: Request, res: Response) => {
-        res.json({ message: "Server working successfully" });
+        res.json({ message: SUCCESS.APP.SERVERWORKER });
       });
 
       app.get("/healthz", (req: Request, res: Response) => {
-        res.status(200).json({ message: "Server working successfully" });
+        res.status(200).json({ message: SUCCESS.APP.SERVERWORKER });
       });
       
-    } catch (error) {}
+    } catch (error) {
+      console.log(ERRORS.DATABASE.SEQERROR)
+    }
   });
 }
 
