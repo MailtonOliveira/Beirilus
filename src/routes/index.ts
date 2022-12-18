@@ -1,19 +1,20 @@
 import userController from './../controllers/usersController';
 import express from "express";
 
-import getOne from '../validations/users/getOne';
+import userOneValidation from '../validations/users/getOne';
 
-import create from '../validations/users/create';
-import update from '../validations/users/update';
+import userCreateValidation from '../validations/users/create';
+import userUpdateValidation from '../validations/users/update';
 
 const routes = express.Router();
 
 const user = new userController
 
 routes.get("/clients", user.listUsers);
-routes.get("/clients/:id", getOne, user.oneUser);
-routes.post("/client/create", create, user.createUser);
-routes.put("/client/:id", update, user.updateUser);
+routes.post("/clients", userCreateValidation, user.createUser);
+routes.get("/clients/:id", userOneValidation, user.oneUser);
+routes.put("/clients/:id", userUpdateValidation, user.updateUser);
+routes.delete("/clients/:id", userOneValidation, user.deleteUser);
 
 
 export default routes;

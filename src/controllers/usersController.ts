@@ -83,6 +83,32 @@ class userController {
       res.status(200).json(userUpdate)
     } catch (error) {}
   }
+  async deleteUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      const userDelete = await prisma.user.findFirst({
+        where: {
+          id,
+        },
+      });
+
+      if (!userDelete) {
+        res.status(404).json(ERRORS.USER.BYID);
+      };
+
+      await prisma.user.delete({
+        where: {
+          id,
+        },
+      });
+
+      res.sendStatus(204)
+      
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default userController;
