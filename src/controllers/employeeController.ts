@@ -5,7 +5,7 @@ import prisma from "../database/prismaClient"
 
 class employeeController {
 
-  async listEmployee(req: Request, res: Response, next: NextFunction) {
+  async listEmployees(req: Request, res: Response, next: NextFunction) {
     try {
         const listingEmployees = await prisma.employee.findMany();
         res.json({ listingEmployees });
@@ -14,7 +14,7 @@ class employeeController {
     }
   };
 
-  async findByIdEmployee(req: Request, res: Response, next: NextFunction) {
+  async oneEmployee(req: Request, res: Response, next: NextFunction) {
     try {
 
         const { id } = req.params;
