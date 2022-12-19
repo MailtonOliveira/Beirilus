@@ -25,19 +25,20 @@ model Booking {
 }
 
 model User {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  email     String     @unique
-  name      String
-  phone     String
-  birth     DateTime
-  passwd    String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  booking   Booking[]
-  employee  Employee[]
-  typeUser  TypeUser[]
-  Shift     Shift?     @relation(fields: [shiftId], references: [id])
-  shiftId   String?    @db.ObjectId
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  email      String    @unique
+  name       String
+  phone      String
+  birth      DateTime
+  passwd     String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  booking    Booking[]
+  employee   Employee?
+  typeUser   TypeUser  @relation(fields: [typeUserId], references: [id])
+  typeUserId String    @db.ObjectId
+  Shift      Shift?    @relation(fields: [shiftId], references: [id])
+  shiftId    String?   @db.ObjectId
 
   @@map("Customer")
 }
@@ -46,8 +47,8 @@ model Employee {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  User      User?     @relation(fields: [userId], references: [id])
-  userId    String?   @db.ObjectId
+  User      User      @relation(fields: [userId], references: [id])
+  userId    String    @unique @db.ObjectId
   booking   Booking[]
 
   @@map("Barber")
@@ -70,8 +71,7 @@ model TypeUser {
   type      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?  @db.ObjectId
+  User      User[]
 
   @@map("Types")
 }
