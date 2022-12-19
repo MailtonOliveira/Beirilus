@@ -7,6 +7,7 @@ import userOneValidation from '../validations/users/getOne';
 import userCreateValidation from '../validations/users/create';
 import userUpdateValidation from '../validations/users/update';
 
+
 const routes = express.Router();
 
 const user = new userController;
