@@ -46,7 +46,7 @@ model Employee {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
-  User       User      @relation(fields: [userId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
   userId     String    @unique @db.ObjectId
   booking    Booking[]
   TypeUser   TypeUser  @relation(fields: [typeUserId], references: [id])
