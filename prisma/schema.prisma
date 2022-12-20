@@ -13,7 +13,6 @@ datasource db {
 model Booking {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   date       DateTime @unique
-  hours      DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   customer   User     @relation(fields: [customerId], references: [id])
@@ -40,16 +39,18 @@ model User {
   Shift      Shift?    @relation(fields: [shiftId], references: [id])
   shiftId    String?   @db.ObjectId
 
-  @@map("Customer")
+  @@map("User")
 }
 
 model Employee {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  User      User      @relation(fields: [userId], references: [id])
-  userId    String    @unique @db.ObjectId
-  booking   Booking[]
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  User       User      @relation(fields: [userId], references: [id])
+  userId     String    @unique @db.ObjectId
+  booking    Booking[]
+  TypeUser   TypeUser  @relation(fields: [typeUserId], references: [id])
+  typeUserId String    @db.ObjectId
 
   @@map("Barber")
 }
@@ -67,11 +68,12 @@ model Services {
 }
 
 model TypeUser {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
   type      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  User      User[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  user      User[]
+  employee  Employee[]
 
   @@map("Types")
 }
