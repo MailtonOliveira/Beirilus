@@ -1,9 +1,7 @@
-import { ERRORS } from './../constants/errors';
-import { PrismaClient } from "@prisma/client";
+import { ERRORS } from "./../constants/errors";
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
-
-const prisma = new PrismaClient();
+import prisma from "../database/prismaClient"
 
 class userController {
   async listUsers(req: Request, res: Response, next: NextFunction) {
@@ -37,7 +35,7 @@ class userController {
 
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, name, phone, birth, passwd } = req.body;
+      const { email, name, phone, birth, passwd, typeUser } = req.body;
       const newPass = bcrypt.hashSync(passwd, 10);
       const userCreate = await prisma.user.create({
         data: {
@@ -46,6 +44,7 @@ class userController {
           phone,
           birth,
           passwd: newPass,
+          typeUser
         },
       });
       res.status(201).json(userCreate);
@@ -77,10 +76,10 @@ class userController {
       });
 
       if (!userUpdate) {
-        res.status(400).json(ERRORS.USER.BYID)
-      };
+        res.status(400).json(ERRORS.USER.BYID);
+      }
 
-      res.status(200).json(userUpdate)
+      res.status(200).json(userUpdate);
     } catch (error) {}
   }
   async deleteUser(req: Request, res: Response, next: NextFunction) {
@@ -95,7 +94,7 @@ class userController {
 
       if (!userDelete) {
         res.status(404).json(ERRORS.USER.BYID);
-      };
+      }
 
       await prisma.user.delete({
         where: {
@@ -103,8 +102,7 @@ class userController {
         },
       });
 
-      res.sendStatus(204)
-      
+      res.sendStatus(204);
     } catch (error) {
       next(error);
     }
