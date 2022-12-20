@@ -1,5 +1,6 @@
 
 import { Request, Response, NextFunction } from "express";
+import { ERRORS } from "../constants/errors";
 import prisma from "../database/prismaClient"
 
 
@@ -50,6 +51,33 @@ class employeeController {
       next(error);
     }
   };
+
+  async deleteEmployee(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      const EmployeeDelete = await prisma.employee.findFirst({
+        where: {
+          id,
+        },
+      });
+
+      if (!EmployeeDelete) {
+        res.status(404).json(ERRORS.USER.BYID);
+      }
+
+      await prisma.user.delete({
+        where: {
+          id,
+        },
+      });
+
+      res.sendStatus(204);
+    } catch (error) {
+      next(error);
+    }
+  };
+
 }
 
 export default employeeController;
