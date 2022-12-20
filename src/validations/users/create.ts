@@ -6,6 +6,7 @@ export default validate({
         email: Joi.string().email().required(),
         phone: Joi.number().required(),
         birth: Joi.date().required(),
-        passwd: Joi.string().min(8).required()
+        passwd: Joi.string().min(8).required(),
+        type: Joi.string().required(),
     }),
 });

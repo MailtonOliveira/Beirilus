@@ -18,13 +18,13 @@ const user = new userController;
 const employee = new employeeController;
 
 routes.get("/clients", user.listUsers);
-routes.post("/clients", userCreateValidation, user.createUser);
+routes.post("/clients", user.createUser);
 routes.get("/clients/:id", userOneValidation, user.oneUser);
 routes.put("/clients/:id", userUpdateValidation, user.updateUser);
 routes.delete("/clients/:id", userOneValidation, user.deleteUser);
 
 routes.get("/employees", employee.listEmployees);
-routes.post("/employees/create", employeeCreateValidation, employee.createEmployee);
+// routes.post("/employees/create", employeeCreateValidation, employee.createEmployee);
 routes.get("employees/:id", employeeOneValidation, employee.oneEmployee )
 
 
