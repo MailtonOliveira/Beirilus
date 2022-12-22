@@ -1,5 +1,7 @@
+import typeController from './../controllers/typeUserController';
 import userController from './../controllers/usersController';
 import employeeController from '../controllers/employeeController';
+
 
 import express from "express";
 
@@ -16,6 +18,7 @@ const routes = express.Router();
 const user = new userController;
 
 const employee = new employeeController;
+const typeUser = new typeController;
 
 routes.get("/clients", user.listUsers);
 routes.post("/clients", user.createUser);
@@ -24,8 +27,11 @@ routes.put("/clients/:id", userUpdateValidation, user.updateUser);
 routes.delete("/clients/:id", userOneValidation, user.deleteUser);
 
 routes.get("/employees", employee.listEmployees);
-routes.post("/employees/create", employeeCreateValidation, employee.createEmployee);
-routes.get("employees/:id", employeeOneValidation, employee.oneEmployee )
+routes.post("/employees", employee.createEmployee);
+routes.get("employees/:id", employeeOneValidation, employee.oneEmployee );
+
+routes.post("/typeUser", typeUser.createType);
+routes.get("/typeUser", typeUser.listTypes);
 
 
 export default routes;
