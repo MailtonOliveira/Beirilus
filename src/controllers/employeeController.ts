@@ -39,10 +39,11 @@ class employeeController {
 
   async createEmployee(req: Request, res: Response, next: NextFunction) {
     try {
-      const { userId } = req.body;
+      const { userId, typeUserId } = req.body;
       const employeeCreate = await prisma.employee.create({
         data: {
           userId,
+          typeUserId
         },
       });
       res.status(201).json(employeeCreate);
