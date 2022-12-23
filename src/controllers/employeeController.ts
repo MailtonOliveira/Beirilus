@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import bcrypt from "bcrypt";
 import prisma from "../database/prismaClient";
 
 class employeeController {
@@ -34,17 +33,11 @@ class employeeController {
 
   async createEmployee(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, name, phone, birth, passwd, employee, typeUser } = req.body;
-      const newPass = bcrypt.hashSync(passwd, 10);
-      const employeeCreate = await prisma.user.create({
+      const { typeUserId, user } = req.body;
+      const employeeCreate = await prisma.employee.create({
         data: {
-          email,
-          name,
-          phone,
-          birth,
-          passwd: newPass,
-          employee,
-          typeUser
+          typeUserId,
+          user
         }
       });
                

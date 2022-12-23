@@ -24,20 +24,22 @@ model Booking {
 }
 
 model User {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
-  email      String     @unique
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  email      String    @unique
   name       String
-  phone      String     @default("00-00000-0000")
+  phone      String    @default("00-00000-0000")
   birth      DateTime
   passwd     String
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  role       Role      @default(CUSTOMER)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
   booking    Booking[]
-  employee   Employee[]
-  typeUser   TypeUser?  @relation(fields: [typeUserId], references: [id])
-  typeUserId String?    @db.ObjectId
-  Shift      Shift?     @relation(fields: [shiftId], references: [id])
-  shiftId    String?    @db.ObjectId
+  typeUser   TypeUser? @relation(fields: [typeUserId], references: [id])
+  typeUserId String?   @db.ObjectId
+  Shift      Shift?    @relation(fields: [shiftId], references: [id])
+  shiftId    String?   @db.ObjectId
+  Employee   Employee? @relation(fields: [employeeId], references: [id])
+  employeeId String?   @db.ObjectId
 
   @@map("Users")
 }
@@ -47,8 +49,7 @@ model Employee {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   booking    Booking[]
-  user       User?     @relation(fields: [userId], references: [id])
-  userId     String?   @unique @db.ObjectId
+  user       User[]     
   typeUser   TypeUser  @relation(fields: [typeUserId], references: [id])
   typeUserId String    @db.ObjectId
 
@@ -97,4 +98,10 @@ model Config {
   mail_displayname String
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  CUSTOMER
+  EMPLOYEE
 }
