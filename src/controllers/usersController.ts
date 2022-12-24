@@ -50,7 +50,7 @@ class userController {
       });
       res.status(201).json(userCreate);
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   }
 
@@ -81,7 +81,9 @@ class userController {
       }
 
       res.status(200).json(userUpdate);
-    } catch (error) {}
+    } catch (error) {
+      next(error)
+    }
   }
   async deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
