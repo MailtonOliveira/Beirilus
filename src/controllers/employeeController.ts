@@ -34,18 +34,19 @@ class employeeController {
 
   async createEmployee(req: Request, res: Response, next: NextFunction) {
     try {
-      const { userId } = req.body;
+      const { userId, typeUserId } = req.body;
       const employeeCreate = await prisma.employee.create({
         data: {
           userId,
+          typeUserId
         },
       });
 
-      if (!employee) {
+      if (!employeeCreate) {
         res.status(404).json("id não encontrado");
       }
 
-      res.status(200).json(employee);
+      res.status(200).json(employeeCreate);
     } catch (error) {
       next(error);
     }
@@ -105,22 +106,25 @@ class employeeController {
   }
 }
 
-  async createEmployee(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { typeUserId, user } = req.body;
-      const employeeCreate = await prisma.employee.create({
-        data: {
-          typeUserId,
-          user
-        }
-      });
-               
-        
-      
-      res.status(201).json(employeeCreate);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-}
-export default employeeController;
+// async createEmployee(req: Request, res: Response, next: NextFunction) {
+//   try {
+//     const { email, name, phone, birth, passwd, employee, typeUser } = req.body;
+//     const newPass = bcrypt.hashSync(passwd, 10);
+//     const employeeCreate = await prisma.user.create({
+//       data: {
+//         email,
+//         name,
+//         phone,
+//         birth,
+//         passwd: newPass,
+//         employee,
+//         typeUser
+//       }
+//     });
+//     res.status(201).json(employeeCreate);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+
