@@ -40,7 +40,12 @@ class employeeController {
           userId,
         },
       });
-      res.status(201).json(employeeCreate);
+
+      if (!employee) {
+        res.status(404).json("id não encontrado");
+      }
+
+      res.status(200).json(employee);
     } catch (error) {
       next(error);
     }
@@ -100,4 +105,22 @@ class employeeController {
   }
 }
 
+  async createEmployee(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { typeUserId, user } = req.body;
+      const employeeCreate = await prisma.employee.create({
+        data: {
+          typeUserId,
+          user
+        }
+      });
+               
+        
+      
+      res.status(201).json(employeeCreate);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
 export default employeeController;

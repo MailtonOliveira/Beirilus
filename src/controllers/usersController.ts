@@ -35,7 +35,7 @@ class userController {
 
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, name, phone, birth, passwd, typeUser } = req.body;
+      const { email, name, phone, birth, passwd, role, typeUserId } = req.body;
       const newPass = bcrypt.hashSync(passwd, 10);
       const userCreate = await prisma.user.create({
         data: {
@@ -44,7 +44,8 @@ class userController {
           phone,
           birth,
           passwd: newPass,
-          typeUser
+          role,
+          typeUserId         
         },
       });
       res.status(201).json(userCreate);
@@ -80,7 +81,9 @@ class userController {
       }
 
       res.status(200).json(userUpdate);
-    } catch (error) {}
+    } catch (error) {
+      next(error)
+    }
   }
   async deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
