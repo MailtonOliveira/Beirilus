@@ -1,42 +1,36 @@
-
 import { Request, Response, NextFunction } from "express";
 import { ERRORS } from "../constants/errors";
-import prisma from "../database/prismaClient"
-
+import prisma from "../database/prismaClient";
 
 class employeeController {
-
   async listEmployees(req: Request, res: Response, next: NextFunction) {
     try {
-        const listingEmployees = await prisma.employee.findMany();
-        res.json({ listingEmployees });
+      const listingEmployees = await prisma.employee.findMany();
+      res.json({ listingEmployees });
     } catch (error) {
-        next(error);
+      next(error);
     }
-  };
+  }
 
   async oneEmployee(req: Request, res: Response, next: NextFunction) {
     try {
+      const { id } = req.params;
 
-        const { id } = req.params;
+      const employee = await prisma.employee.findUnique({
+        where: {
+          id,
+        },
+      });
 
-        const employee = await prisma.employee.findUnique({
-            where: {
-                id,
-            }
-        });
+      if (!employee) {
+        res.status(404).json("id não encontrado");
+      }
 
-        if (!employee) {
-            res.status(404).json("id não encontrado")
-        };
-
-        res.status(200).json(employee)
-
+      res.status(200).json(employee);
     } catch (error) {
-        next(error)
+      next(error);
     }
-
-  };
+  }
 
   async createEmployee(req: Request, res: Response, next: NextFunction) {
     try {
@@ -50,19 +44,46 @@ class employeeController {
     } catch (error) {
       next(error);
     }
-  };
+  }
 
-  async deleteEmployee(req: Request, res: Response, next: NextFunction) {
+  async updateEmployee(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
+      const { userId } = req.body;
 
-      const EmployeeDelete = await prisma.employee.findFirst({
+      await prisma.employee.update({
+        where: {
+          id,
+        },
+        data: {
+          userId,
+        },
+      });
+      const employeeUpdate = await prisma.employee.findFirst({
         where: {
           id,
         },
       });
 
-      if (!EmployeeDelete) {
+      if (!employeeUpdate) {
+        res.status(400).json(ERRORS.USER.BYID);
+      }
+
+      res.status(200).json(employeeUpdate);
+    } catch (error) {}
+  }
+
+  async deleteEmployee(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      const employeeDelete = await prisma.employee.findFirst({
+        where: {
+          id,
+        },
+      });
+
+      if (!employeeDelete) {
         res.status(404).json(ERRORS.USER.BYID);
       }
 
@@ -76,8 +97,7 @@ class employeeController {
     } catch (error) {
       next(error);
     }
-  };
-
+  }
 }
 
 export default employeeController;
