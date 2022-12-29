@@ -128,3 +128,4 @@ class employeeController {
 // }
 
 
+export default employeeController;
