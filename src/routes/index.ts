@@ -13,6 +13,9 @@ import employeeCreateValidation from '../validations/employees/create';
 import employeeOneValidation from '../validations/employees/getOne';
 
 
+import typeUserValidatioin from '../validations/typeUser/create';
+
+
 const routes = express.Router();
 
 const user = new userController;
@@ -30,7 +33,7 @@ routes.get("/employees", employee.listEmployees);
 routes.post("/employees", employeeCreateValidation, employee.createEmployee);
 routes.get("/employees/:id", employeeOneValidation, employee.oneEmployee );
 
-routes.post("/typeUser", typeUser.createType);
+routes.post("/typeUser",typeUserValidatioin, typeUser.createType);
 routes.get("/typeUser", typeUser.listTypes);
 
 
