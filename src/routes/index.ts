@@ -28,7 +28,7 @@ routes.delete("/clients/:id", userOneValidation, user.deleteUser);
 
 routes.get("/employees", employee.listEmployees);
 routes.post("/employees", employeeCreateValidation, employee.createEmployee);
-routes.get("employees/:id", employeeOneValidation, employee.oneEmployee );
+routes.get("/employees/:id", employeeOneValidation, employee.oneEmployee );
 
 routes.post("/typeUser", typeUser.createType);
 routes.get("/typeUser", typeUser.listTypes);
