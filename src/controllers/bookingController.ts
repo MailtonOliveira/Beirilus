@@ -38,10 +38,14 @@ class bookingController {
 
   async createBooking(req: Request, res: Response, next: NextFunction) {
     try {
-      const { date } = req.body;
+      const { date, customerId, servicesId, baberId } = req.body;
       const createBooking = await prisma.booking.create({
         data: {
-          date
+          date,
+          customerId,
+          servicesId,
+          baberId
+
         },
       });
       res.status(201).json(createBooking);
