@@ -10,8 +10,10 @@ export const ERRORS = {
         ID: "Id não encontrado"
     },
     EMPLOYEE: {
-        ID: "Id não encontrado"
+        ID: "Id não encontrado",
+        TYPEUSER: "typeUserid não encontrado"
     },
+
     DATABASE: {
         SEQERROR: "🥵 Error trying to connect to database",
         HASCONECTIONERROR: "🥵 Error when trying to connect"

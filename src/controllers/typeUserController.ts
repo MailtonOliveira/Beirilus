@@ -14,10 +14,11 @@ class typeController {
 
   async createType(req: Request, res: Response, next: NextFunction) {
     try {
-      const { type } = req.body;
+      const { role, type, } = req.body;
       const typeCreate = await prisma.typeUser.create({
         data: {
-          type,
+          role,
+          type
         },
       });
       res.status(201).json(typeCreate);

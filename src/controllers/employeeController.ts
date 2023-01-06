@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ERRORS } from "../constants/errors";
 import prisma from "../database/prismaClient";
+import { Role } from "@prisma/client";
 
 class employeeController {
   async listEmployees(req: Request, res: Response, next: NextFunction) {
@@ -34,11 +35,19 @@ class employeeController {
 
   async createEmployee(req: Request, res: Response, next: NextFunction) {
     try {
-      const { userId, typeUserId } = req.body;
+      const { user } = req.body;
+      const typeUser = await prisma.typeUser.findFirst({
+        where: {
+          role: Role.EMPLOYEE
+        },
+      });
+
+      if (user.create.typeUserId != typeUser?.id) {
+        return res.status(404).json(ERRORS.EMPLOYEE.TYPEUSER)
+      }
       const employeeCreate = await prisma.employee.create({
         data: {
-          userId,
-          typeUserId
+          user,
         },
       });
 
