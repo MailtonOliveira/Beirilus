@@ -5,10 +5,6 @@ export default validate({
         id: Joi.string().hex().required(),
     }),
     body: Joi.object({
-        name: Joi.string(),
-        email: Joi.string().email(),
-        phone: Joi.number(),
-        birth: Joi.date(),
-
+        date: Joi.date(),
     }),
 });

@@ -5,10 +5,10 @@ export default validate({
         id: Joi.string().hex().required(),
     }),
     body: Joi.object({
-        name: Joi.string(),
-        email: Joi.string().email(),
-        phone: Joi.number(),
-        birth: Joi.date(),
+        price:       Joi.string().required(),
+        name:       Joi.string().required(),
+        description: Joi.string().required(),
+        duration: Joi.date().required(),
 
     }),
 });

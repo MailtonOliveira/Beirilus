@@ -7,6 +7,9 @@ export default validate({
         phone: Joi.number().required(),
         birth: Joi.date().required(),
         passwd: Joi.string().min(8).required(),
-        type: Joi.string().required(),
+        typeUserId: Joi.string().hex().required(),
+        employee: Joi.object({
+            
+        })
     }),
 });
