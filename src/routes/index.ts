@@ -21,6 +21,9 @@ import bookingCreateValidation from '../validations/booking/create';
 import bookingOneValidation from '../validations/booking/getOne';
 import bookingUpdateValidation from '../validations/booking/update';
 
+import typeUserValidatioin from '../validations/typeUser/create';
+
+
 const routes = express.Router();
 
 const user = new userController;
@@ -40,8 +43,11 @@ routes.get("/employees", employee.listEmployees);
 routes.post("/employees", employeeCreateValidation, employee.createEmployee);
 routes.get("/employees/:id", employeeOneValidation, employee.oneEmployee );
 
-routes.post("/typeUser", typeUser.createType);
+routes.post("/typeUser",typeUserValidatioin, typeUser.createType);
 routes.get("/typeUser", typeUser.listTypes);
+routes.put("/typeUser/:id",typeUserValidatioin,typeUser.uptadeTypeUser);
+routes.delete("/typeUser/:id",typeUser.deleteType);
+routes.get("typeUser/:id",typeUser.oneTyper);
 
 routes.get("/services", services.listServices);
 routes.post("/services", servicesCreateValidation, services.createServices);
