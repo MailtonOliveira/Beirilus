@@ -37,6 +37,7 @@ routes.post("/typeUser",typeUserValidatioin, typeUser.createType);
 routes.get("/typeUser", typeUser.listTypes);
 routes.put("/typeUser/:id",typeUserValidatioin,typeUser.uptadeTypeUser);
 routes.delete("/typeUser/:id",typeUser.deleteType);
+routes.get("typeUser/:id",typeUser.oneTyper);
 
 
 export default routes;
