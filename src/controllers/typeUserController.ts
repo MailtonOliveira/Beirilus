@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { ERRORS } from "../constants/errors";
 import prisma from "../database/prismaClient";
 
 class typeController {
@@ -21,6 +22,61 @@ class typeController {
         },
       });
       res.status(201).json(typeCreate);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async uptadeTypeUser(req:Request, res:Response, next: NextFunction){
+    try {
+        const {id} = req.params;
+        const {type} = req.body;
+
+        await prisma.typeUser.update({
+          where:{
+            id
+          },
+          data:{
+            type
+          }
+        });
+        const uptadeType = await prisma.typeUser.findFirst({
+          where:{
+            id
+          }
+        });
+
+        if(!uptadeType){
+          res.status(400).json(ERRORS.TYPE.ID);
+        }
+        
+        res.status(200).json(uptadeType);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteType(req:Request, res:Response, next:NextFunction){
+    try {
+      const { id } = req.params;
+
+      const typeDelete = await prisma.typeUser.findFirst({
+        where: {
+          id,
+        },
+      });
+
+      if (!typeDelete) {
+        res.status(404).json(ERRORS.TYPE.ID);
+      }
+
+      await prisma.typeUser.delete({
+        where: {
+          id,
+        },
+      });
+
+      res.sendStatus(204);
     } catch (error) {
       next(error);
     }
