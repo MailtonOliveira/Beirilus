@@ -9,7 +9,7 @@ class userController {
       const listUsers = await prisma.user.findMany();
       res.json({ listUsers });
     } catch (error) {
-      next(error);
+      return next(error);
     }
   }
 
@@ -24,12 +24,12 @@ class userController {
       });
 
       if (!userOne) {
-        res.status(404).json(ERRORS.USER.BYID);
+        return res.status(404).json(ERRORS.USER.BYID);
       }
 
       res.status(200).json(userOne);
     } catch (error) {
-      next(error);
+      return next(error);
     }
   }
 
@@ -48,7 +48,7 @@ class userController {
           typeUserId         
         },
       });
-      res.status(201).json(userCreate);
+      return res.status(201).json(userCreate);
     } catch (error) {
       next(error);
     }
@@ -77,10 +77,10 @@ class userController {
       });
 
       if (!userUpdate) {
-        res.status(400).json(ERRORS.USER.BYID);
+        return res.status(400).json(ERRORS.USER.BYID);
       }
 
-      res.status(200).json(userUpdate);
+      return res.status(200).json(userUpdate);
     } catch (error) {
       next(error)
     }
@@ -96,7 +96,7 @@ class userController {
       });
 
       if (!userDelete) {
-        res.status(404).json(ERRORS.USER.BYID);
+        return res.status(404).json(ERRORS.USER.BYID);
       }
 
       await prisma.user.delete({
@@ -105,7 +105,7 @@ class userController {
         },
       });
 
-      res.sendStatus(204);
+      return res.sendStatus(204);
     } catch (error) {
       next(error);
     }

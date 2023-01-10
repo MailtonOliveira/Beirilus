@@ -6,6 +6,9 @@ export const ERRORS = {
         BYID: "Id não encontrado",
         CREATE: "Não é possivel criar, há um erro na requisição"
     },
+    TYPE:{
+        ID:"Id não econtrado"
+    },
     BOOKING: {
         ID: "Id não encontrado"
     },
