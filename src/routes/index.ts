@@ -43,7 +43,6 @@ routes.delete("/clients/:id", userOneValidation, user.deleteUser);
 routes.get("/employees", employee.listEmployees);
 routes.post("/employees", employeeCreateValidation, employee.createEmployee);
 routes.get("/employees/:id", employeeOneValidation, employee.oneEmployee );
-routes.put("/employees/:id", employeeUpdateValidation, employee.updateEmployee);
 routes.delete("/employee/:id", employee.deleteEmployee)
 
 routes.post("/typeUser",typeUserValidatioin, typeUser.createType);

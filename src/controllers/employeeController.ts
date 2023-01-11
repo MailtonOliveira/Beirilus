@@ -62,33 +62,6 @@ class employeeController {
     }
   }
 
-  async updateEmployee(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params;
-      const { userId } = req.body;
-
-      await prisma.employee.update({
-        where: {
-          id,
-        },
-        data: {
-          userId,
-        },
-      });
-      const employeeUpdate = await prisma.employee.findFirst({
-        where: {
-          id,
-        },
-      });
-
-      if (!employeeUpdate) {
-        return res.status(400).json(ERRORS.USER.BYID);
-      }
-
-        return res.status(200).json(employeeUpdate);
-    } catch (error) {}
-  }
-
   async deleteEmployee(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
