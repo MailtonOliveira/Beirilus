@@ -2,11 +2,23 @@ import { ERRORS } from "./../constants/errors";
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import prisma from "../database/prismaClient"
+import { Role } from "@prisma/client";
 
+const selectwithoutpassword = {
+          id: true,
+          email: true,
+          name: true,
+          phone: true,
+          birth: true,
+          role: true,
+          typeUserId: true
+}
 class userController {
   async listUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const listUsers = await prisma.user.findMany();
+      const listUsers = await prisma.user.findMany({
+        select: selectwithoutpassword
+      });
       res.json({ listUsers });
     } catch (error) {
       return next(error);
@@ -21,6 +33,7 @@ class userController {
         where: {
           id,
         },
+          select: selectwithoutpassword
       });
 
       if (!userOne) {
@@ -35,8 +48,13 @@ class userController {
 
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, name, phone, birth, passwd, role, typeUserId } = req.body;
+      const { email, name, phone, birth, passwd, } = req.body;
       const newPass = bcrypt.hashSync(passwd, 10);
+      const typeUser = await prisma.typeUser.findFirst({
+        where: {
+          role: Role.CUSTOMER
+        },
+      });
       const userCreate = await prisma.user.create({
         data: {
           email,
@@ -44,8 +62,7 @@ class userController {
           phone,
           birth,
           passwd: newPass,
-          role,
-          typeUserId         
+          typeUserId: typeUser?.id        
         },
       });
       return res.status(201).json(userCreate);
