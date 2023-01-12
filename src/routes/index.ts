@@ -12,6 +12,7 @@ import userUpdateValidation from '../validations/users/update';
 
 import employeeCreateValidation from '../validations/employees/create';
 import employeeOneValidation from '../validations/employees/getOne';
+import employeeUpdateValidation from '../validations/employees/update'
 
 import servicesCreateValidation from '../validations/services/create';
 import servicesOneValidation from '../validations/services/getOne';
@@ -42,6 +43,7 @@ routes.delete("/clients/:id", userOneValidation, user.deleteUser);
 routes.get("/employees", employee.listEmployees);
 routes.post("/employees", employeeCreateValidation, employee.createEmployee);
 routes.get("/employees/:id", employeeOneValidation, employee.oneEmployee );
+routes.delete("/employee/:id", employee.deleteEmployee)
 
 routes.post("/typeUser",typeUserValidatioin, typeUser.createType);
 routes.get("/typeUser", typeUser.listTypes);
@@ -52,7 +54,7 @@ routes.get("typeUser/:id",typeUser.oneTyper);
 routes.get("/services", services.listServices);
 routes.post("/services", servicesCreateValidation, services.createServices);
 routes.get("/services/:id", servicesOneValidation, services.findByIdServices);
-routes.post("/services/:id", servicesUpdateValidation, services.updateServices);
+routes.put("/services/:id", servicesUpdateValidation, services.updateServices);
 routes.delete("/services/:id", services.deleteServices);
 
 routes.get("/booking", booking.listBooking);
