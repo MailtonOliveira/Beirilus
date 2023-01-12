@@ -8,7 +8,8 @@ class employeeController {
   async listEmployees(req: Request, res: Response, next: NextFunction) {
     try {
       const listingEmployees = await prisma.employee.findMany();
-      res.json({ listingEmployees });
+      return res.json({ listingEmployees });
+
     } catch (error) {
       next(error);
     }
@@ -25,10 +26,10 @@ class employeeController {
       });
 
       if (!employee) {
-        res.status(404).json("id não encontrado");
+        return res.status(404).json(ERRORS.EMPLOYEE.ID);
       }
 
-      res.status(200).json(employee);
+        return res.status(200).json(employee);
     } catch (error) {
       next(error);
     }
@@ -41,7 +42,7 @@ class employeeController {
       user.create.passwd = newPass
       const typeUser = await prisma.typeUser.findFirst({
         where: {
-          role: Role.EMPLOYEE
+          role: Role.EMPLOYEE,
         },
       });
 
@@ -55,10 +56,10 @@ class employeeController {
       });
 
       if (!employeeCreate) {
-        res.status(404).json("id não encontrado");
+        return res.status(404).json(ERRORS.EMPLOYEE.ID);
       }
 
-      res.status(200).json(employeeCreate);
+        return res.status(200).json(employeeCreate);
     } catch (error) {
       next(error);
     }
@@ -75,7 +76,7 @@ class employeeController {
       });
 
       if (!employeeDelete) {
-        res.status(404).json(ERRORS.USER.BYID);
+        return res.status(404).json(ERRORS.USER.BYID);
       }
 
       await prisma.user.delete({
@@ -84,7 +85,7 @@ class employeeController {
         },
       });
 
-      res.sendStatus(204);
+      return res.sendStatus(204);
     } catch (error) {
       next(error);
     }

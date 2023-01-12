@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 
-export class Employee implements User {     
+export class Customer implements User {     
     id!:         string;
     email!:      string;
     name!:       string;
@@ -19,6 +19,6 @@ export class Employee implements User {
     }
 
     identificador(): void {
-        console.log("Employee")
+        console.log("Customer")
     }
 }
