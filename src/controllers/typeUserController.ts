@@ -1,12 +1,14 @@
+import { TypeUser } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
 import { ERRORS } from "../constants/errors";
 import prisma from "../database/prismaClient";
+import TypeServices from "../services/TypeServices";
 
 class typeController {
 
   async listTypes(req: Request, res: Response, next: NextFunction) {
     try {
-      const listTypes = await prisma.typeUser.findMany();
+      const listTypes: Array<TypeUser> = await TypeServices.getTypes();
       res.json({ listTypes });
     } catch (error) {
       next(error);
@@ -15,13 +17,9 @@ class typeController {
 
   async createType(req: Request, res: Response, next: NextFunction) {
     try {
-      const { type } = req.body;
-      const typeCreate = await prisma.typeUser.create({
-        data: {
-          type
-        },
-      });
-      res.status(201).json(typeCreate);
+      const {type} = req.body;
+      const typeCreate = await TypeServices.createType(type);
+      return res.status(201).json(typeCreate);
     } catch (error) {
       next(error);
     }
@@ -47,10 +45,10 @@ class typeController {
         });
 
         if(!uptadeType){
-          res.status(400).json(ERRORS.TYPE.ID);
+          return res.status(400).json(ERRORS.TYPE.ID);
         }
         
-        res.status(200).json(uptadeType);
+        return res.status(200).json(uptadeType);
     } catch (error) {
       next(error);
     }
@@ -60,17 +58,13 @@ class typeController {
     try {
       const { id } = req.params;
 
-      const typeOne = await prisma.typeUser.findFirst({
-        where: {
-          id,
-        },
-      });
+      const typeOne = await TypeServices.getType(id);
 
       if (!typeOne) {
-        res.status(404).json(ERRORS.TYPE.ID);
+        return res.status(404).json(ERRORS.TYPE.ID);
       }
 
-      res.status(200).json(typeOne);
+      return res.status(200).json(typeOne);
     } catch (error) {
       next(error);
     }
@@ -87,7 +81,7 @@ class typeController {
       });
 
       if (!typeDelete) {
-        res.status(404).json(ERRORS.TYPE.ID);
+        return res.status(404).json(ERRORS.TYPE.ID);
       }
 
       await prisma.typeUser.delete({
@@ -96,7 +90,7 @@ class typeController {
         },
       });
 
-      res.sendStatus(204);
+      return res.sendStatus(204);
     } catch (error) {
       next(error);
     }
