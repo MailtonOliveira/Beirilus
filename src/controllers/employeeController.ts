@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ERRORS } from "../constants/errors";
 import prisma from "../database/prismaClient";
-import { Role } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 class employeeController {
@@ -42,12 +41,12 @@ class employeeController {
       user.create.passwd = newPass
       const typeUser = await prisma.typeUser.findFirst({
         where: {
-          role: Role.EMPLOYEE,
+          type: "employee",
         },
       });
 
       user.create.typeUserId = typeUser?.id
-      user.create.role = Role.EMPLOYEE
+      user.create.type = "employee"
 
       const employeeCreate = await prisma.employee.create({
         data: {

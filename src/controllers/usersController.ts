@@ -2,23 +2,14 @@ import { ERRORS } from "./../constants/errors";
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import prisma from "../database/prismaClient"
-import { Role } from "@prisma/client";
+import { User } from "@prisma/client";
+import userService from "../services/UserService";
+import MailService from "../services/MailService";
 
-const selectwithoutpassword = {
-          id: true,
-          email: true,
-          name: true,
-          phone: true,
-          birth: true,
-          role: true,
-          typeUserId: true
-}
 class userController {
   async listUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const listUsers = await prisma.user.findMany({
-        select: selectwithoutpassword
-      });
+      const listUsers: Array<User> = await userService.getUsers();
       res.json({ listUsers });
     } catch (error) {
       return next(error);
@@ -29,12 +20,7 @@ class userController {
     try {
       const { id } = req.params;
 
-      const userOne = await prisma.user.findFirst({
-        where: {
-          id,
-        },
-          select: selectwithoutpassword
-      });
+      const userOne = await userService.getUser(id);
 
       if (!userOne) {
         return res.status(404).json(ERRORS.USER.BYID);
@@ -52,7 +38,7 @@ class userController {
       const newPass = bcrypt.hashSync(passwd, 10);
       const typeUser = await prisma.typeUser.findFirst({
         where: {
-          role: Role.CUSTOMER
+          type: "customer"
         },
       });
       const userCreate = await prisma.user.create({
@@ -65,6 +51,15 @@ class userController {
           typeUserId: typeUser?.id        
         },
       });
+      
+      const sendMail = await MailService.SendMail(userCreate.email, "Bem vindo <br/> "+userCreate.name, "Boas vindas")
+
+      if (sendMail?.status == "error") {
+        return res.status(400).json(sendMail)
+
+      }
+      
+
       return res.status(201).json(userCreate);
     } catch (error) {
       next(error);
@@ -127,6 +122,8 @@ class userController {
       next(error);
     }
   }
+
+ 
 }
 
 export default userController;

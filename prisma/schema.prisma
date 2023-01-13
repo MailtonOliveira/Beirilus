@@ -19,7 +19,7 @@ model Booking {
   customerId String   @db.ObjectId
   Services   Services @relation(fields: [servicesId], references: [id])
   servicesId String   @db.ObjectId
-  Baber    Employee @relation(fields: [baberId], references: [id])
+  Baber      Employee @relation(fields: [baberId], references: [id])
   baberId    String   @db.ObjectId
 }
 
@@ -30,7 +30,6 @@ model User {
   phone      String     @default("00-00000-0000")
   birth      DateTime
   passwd     String
-  role       Role       @default(CUSTOMER)
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   booking    Booking[]
@@ -69,8 +68,7 @@ model Services {
 
 model TypeUser {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  role      Role     @unique
-  type      String
+  type      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User[]
@@ -90,17 +88,11 @@ model Shift {
 
 model Config {
   id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  mail_host        String
-  mail_port        String
+  mail_host        String?
+  mail_port        String?
   mail_username    String
   mail_passwd      String
-  mail_displayname String
+  mail_displayname String?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
-}
-
-enum Role {
-  ADMIN
-  CUSTOMER
-  EMPLOYEE
 }
