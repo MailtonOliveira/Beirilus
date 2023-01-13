@@ -12,7 +12,6 @@ import userUpdateValidation from '../validations/users/update';
 
 import employeeCreateValidation from '../validations/employees/create';
 import employeeOneValidation from '../validations/employees/getOne';
-import employeeUpdateValidation from '../validations/employees/update'
 
 import servicesCreateValidation from '../validations/services/create';
 import servicesOneValidation from '../validations/services/getOne';
