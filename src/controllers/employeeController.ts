@@ -1,13 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import { ERRORS } from "../constants/errors";
 import prisma from "../database/prismaClient";
-import { Role } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 class employeeController {
   async listEmployees(req: Request, res: Response, next: NextFunction) {
     try {
       const listingEmployees = await prisma.employee.findMany();
-      res.json({ listingEmployees });
+      return res.json({ listingEmployees });
+
     } catch (error) {
       next(error);
     }
@@ -24,10 +25,10 @@ class employeeController {
       });
 
       if (!employee) {
-        res.status(404).json("id não encontrado");
+        return res.status(404).json(ERRORS.EMPLOYEE.ID);
       }
 
-      res.status(200).json(employee);
+        return res.status(200).json(employee);
     } catch (error) {
       next(error);
     }
@@ -36,15 +37,17 @@ class employeeController {
   async createEmployee(req: Request, res: Response, next: NextFunction) {
     try {
       const { user } = req.body;
+      const newPass = bcrypt.hashSync(user.create.passwd, 10);
+      user.create.passwd = newPass
       const typeUser = await prisma.typeUser.findFirst({
         where: {
-          role: Role.EMPLOYEE
+          type: "employee",
         },
       });
 
-      if (user.create.typeUserId != typeUser?.id) {
-        return res.status(404).json(ERRORS.EMPLOYEE.TYPEUSER)
-      }
+      user.create.typeUserId = typeUser?.id
+      user.create.type = "employee"
+
       const employeeCreate = await prisma.employee.create({
         data: {
           user,
@@ -52,40 +55,13 @@ class employeeController {
       });
 
       if (!employeeCreate) {
-        res.status(404).json("id não encontrado");
+        return res.status(404).json(ERRORS.EMPLOYEE.ID);
       }
 
-      res.status(200).json(employeeCreate);
+        return res.status(200).json(employeeCreate);
     } catch (error) {
       next(error);
     }
-  }
-
-  async updateEmployee(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params;
-      const { userId } = req.body;
-
-      await prisma.employee.update({
-        where: {
-          id,
-        },
-        data: {
-          userId,
-        },
-      });
-      const employeeUpdate = await prisma.employee.findFirst({
-        where: {
-          id,
-        },
-      });
-
-      if (!employeeUpdate) {
-        res.status(400).json(ERRORS.USER.BYID);
-      }
-
-      res.status(200).json(employeeUpdate);
-    } catch (error) {}
   }
 
   async deleteEmployee(req: Request, res: Response, next: NextFunction) {
@@ -99,7 +75,7 @@ class employeeController {
       });
 
       if (!employeeDelete) {
-        res.status(404).json(ERRORS.USER.BYID);
+        return res.status(404).json(ERRORS.USER.BYID);
       }
 
       await prisma.user.delete({
@@ -108,33 +84,11 @@ class employeeController {
         },
       });
 
-      res.sendStatus(204);
+      return res.sendStatus(204);
     } catch (error) {
       next(error);
     }
   }
 }
-
-// async createEmployee(req: Request, res: Response, next: NextFunction) {
-//   try {
-//     const { email, name, phone, birth, passwd, employee, typeUser } = req.body;
-//     const newPass = bcrypt.hashSync(passwd, 10);
-//     const employeeCreate = await prisma.user.create({
-//       data: {
-//         email,
-//         name,
-//         phone,
-//         birth,
-//         passwd: newPass,
-//         employee,
-//         typeUser
-//       }
-//     });
-//     res.status(201).json(employeeCreate);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
 
 export default employeeController;
