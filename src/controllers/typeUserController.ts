@@ -22,7 +22,7 @@ class typeController {
           type
         },
       });
-      res.status(201).json(typeCreate);
+      return res.status(201).json(typeCreate);
     } catch (error) {
       next(error);
     }
@@ -48,10 +48,10 @@ class typeController {
         });
 
         if(!uptadeType){
-          res.status(400).json(ERRORS.TYPE.ID);
+          return res.status(400).json(ERRORS.TYPE.ID);
         }
         
-        res.status(200).json(uptadeType);
+        return res.status(200).json(uptadeType);
     } catch (error) {
       next(error);
     }
@@ -68,10 +68,10 @@ class typeController {
       });
 
       if (!typeOne) {
-        res.status(404).json(ERRORS.TYPE.ID);
+        return res.status(404).json(ERRORS.TYPE.ID);
       }
 
-      res.status(200).json(typeOne);
+      return res.status(200).json(typeOne);
     } catch (error) {
       next(error);
     }
@@ -88,7 +88,7 @@ class typeController {
       });
 
       if (!typeDelete) {
-        res.status(404).json(ERRORS.TYPE.ID);
+        return res.status(404).json(ERRORS.TYPE.ID);
       }
 
       await prisma.typeUser.delete({
@@ -97,7 +97,7 @@ class typeController {
         },
       });
 
-      res.sendStatus(204);
+      return res.sendStatus(204);
     } catch (error) {
       next(error);
     }
