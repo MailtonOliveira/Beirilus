@@ -34,7 +34,7 @@ const services = new servicesController;
 const booking = new bookingController;
 
 routes.get("/clients", user.listUsers);
-routes.post("/clients", userCreateValidation, user.createUser);
+routes.post("/clients", user.createUser);
 routes.get("/clients/:id", userOneValidation, user.oneUser);
 routes.put("/clients/:id", userUpdateValidation, user.updateUser);
 routes.delete("/clients/:id", userOneValidation, user.deleteUser);

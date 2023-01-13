@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { User } from "@prisma/client";
 import prisma from "../database/prismaClient";
+import TypeServices from "../services/TypeServices";
 
 const selectwithoutpassword = {
   id: true,
@@ -8,7 +9,6 @@ const selectwithoutpassword = {
   name: true,
   phone: true,
   birth: true,
-  role: true,
   typeUserId: true,
 };
 
@@ -29,13 +29,11 @@ class UserRepository {
     });
   }
 
-  async createUser(dados: User): Promise<any> {
+
+
+  async createUser(dados: User): Promise<User> {
     const newPass = bcrypt.hashSync(dados.passwd, 10)
-    const typeUser = prisma.typeUser.findFirst({
-        where: {
-          type: "customer"
-        },
-      });
+    const typeUser = await TypeServices.getTypeUser("", "customer")
     
     return await prisma.user.create({
       data: {
@@ -44,7 +42,7 @@ class UserRepository {
         phone: dados.phone,
         birth: dados.birth,
         passwd: newPass,
-        // typeUserId: typeUser?.id,
+        typeUserId: typeUser.id
       },
     });
   }
