@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ERRORS } from "../constants/errors";
 import prisma from "../database/prismaClient";
-import { Role } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 
 
@@ -39,15 +39,17 @@ class employeeController {
   async createEmployee(req: Request, res: Response, next: NextFunction) {
     try {
       const { user } = req.body;
+      const newPass = bcrypt.hashSync(user.create.passwd, 10);
+      user.create.passwd = newPass
       const typeUser = await prisma.typeUser.findFirst({
         where: {
-          role: Role.EMPLOYEE,
+          type: "employee",
         },
       });
 
-      if (user.create.typeUserId != typeUser?.id) {
-        return res.status(404).json(ERRORS.EMPLOYEE.TYPEUSER);
-      }
+      user.create.typeUserId = typeUser?.id
+      user.create.type = "employee"
+
       const employeeCreate = await prisma.employee.create({
         data: {
           user,

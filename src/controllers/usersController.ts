@@ -2,11 +2,14 @@ import { ERRORS } from "./../constants/errors";
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import prisma from "../database/prismaClient"
+import { User } from "@prisma/client";
+import userService from "../services/UserService";
+import MailService from "../services/MailService";
 
 class userController {
   async listUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const listUsers = await prisma.user.findMany();
+      const listUsers: Array<User> = await userService.getUsers();
       res.json({ listUsers });
     } catch (error) {
       return next(error);
@@ -17,11 +20,7 @@ class userController {
     try {
       const { id } = req.params;
 
-      const userOne = await prisma.user.findFirst({
-        where: {
-          id,
-        },
-      });
+      const userOne = await userService.getUser(id);
 
       if (!userOne) {
         return res.status(404).json(ERRORS.USER.BYID);
@@ -35,8 +34,13 @@ class userController {
 
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, name, phone, birth, passwd, role, typeUserId } = req.body;
+      const { email, name, phone, birth, passwd, } = req.body;
       const newPass = bcrypt.hashSync(passwd, 10);
+      const typeUser = await prisma.typeUser.findFirst({
+        where: {
+          type: "customer"
+        },
+      });
       const userCreate = await prisma.user.create({
         data: {
           email,
@@ -44,10 +48,18 @@ class userController {
           phone,
           birth,
           passwd: newPass,
-          role,
-          typeUserId         
+          typeUserId: typeUser?.id        
         },
       });
+      
+      const sendMail = await MailService.SendMail(userCreate.email, "Bem vindo <br/> "+userCreate.name, "Boas vindas")
+
+      if (sendMail?.status == "error") {
+        return res.status(400).json(sendMail)
+
+      }
+      
+
       return res.status(201).json(userCreate);
     } catch (error) {
       next(error);
@@ -110,6 +122,8 @@ class userController {
       next(error);
     }
   }
+
+ 
 }
 
 export default userController;
