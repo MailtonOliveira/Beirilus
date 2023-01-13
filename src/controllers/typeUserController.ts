@@ -1,12 +1,14 @@
+import { TypeUser } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
 import { ERRORS } from "../constants/errors";
 import prisma from "../database/prismaClient";
+import TypeServices from "../services/TypeServices";
 
 class typeController {
 
   async listTypes(req: Request, res: Response, next: NextFunction) {
     try {
-      const listTypes = await prisma.typeUser.findMany();
+      const listTypes: Array<TypeUser> = await TypeServices.getTypes();
       res.json({ listTypes });
     } catch (error) {
       next(error);
@@ -15,12 +17,8 @@ class typeController {
 
   async createType(req: Request, res: Response, next: NextFunction) {
     try {
-      const { type } = req.body;
-      const typeCreate = await prisma.typeUser.create({
-        data: {
-          type
-        },
-      });
+      const {type} = req.body;
+      const typeCreate = await TypeServices.createType(type);
       return res.status(201).json(typeCreate);
     } catch (error) {
       next(error);
@@ -60,11 +58,7 @@ class typeController {
     try {
       const { id } = req.params;
 
-      const typeOne = await prisma.typeUser.findFirst({
-        where: {
-          id,
-        },
-      });
+      const typeOne = await TypeServices.getType(id);
 
       if (!typeOne) {
         return res.status(404).json(ERRORS.TYPE.ID);
