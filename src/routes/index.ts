@@ -52,7 +52,7 @@ routes.get("typeUser/:id",typeUser.oneTyper);
 routes.get("/services", services.listServices);
 routes.post("/services", servicesCreateValidation, services.createServices);
 routes.get("/services/:id", servicesOneValidation, services.findByIdServices);
-routes.post("/services/:id", servicesUpdateValidation, services.updateServices);
+routes.put("/services/:id", servicesUpdateValidation, services.updateServices);
 routes.delete("/services/:id", services.deleteServices);
 
 routes.get("/booking", booking.listBooking);
