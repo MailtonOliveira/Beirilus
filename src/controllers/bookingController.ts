@@ -4,6 +4,7 @@ import prisma from "../database/prismaClient"
 import MailService from "../services/MailService";
 
 
+
 class bookingController {
   async listBooking(req: Request, res: Response, next: NextFunction) {
     try {
@@ -91,7 +92,7 @@ class bookingController {
       });
 
       if (!bookingUpdate) {
-        res.status(400).json(ERRORS.USER.BYID);
+        return res.status(400).json(ERRORS.USER.BYID);
       }
 
       res.status(200).json(bookingUpdate);

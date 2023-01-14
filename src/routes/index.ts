@@ -3,6 +3,7 @@ import userController from './../controllers/usersController';
 import employeeController from '../controllers/employeeController';
 import servicesController from '../controllers/servicesController';
 import bookingController from '../controllers/bookingController';
+import shiftsController from '../controllers/shiftsController';
 
 import express from "express";
 
@@ -21,8 +22,11 @@ import bookingCreateValidation from '../validations/booking/create';
 import bookingOneValidation from '../validations/booking/getOne';
 import bookingUpdateValidation from '../validations/booking/update';
 
-import typeUserValidatioin from '../validations/typeUser/create';
+import typeUserValidation from '../validations/typeUser/create';
 
+import shiftsCreateValidation from '../validations/shifts/create';
+import shiftsOneValidation from '../validations/shifts/getOne';
+import shiftsUpdateValidation from '../validations/shifts/update';
 
 const routes = express.Router();
 
@@ -32,6 +36,7 @@ const employee = new employeeController;
 const typeUser = new typeController;
 const services = new servicesController;
 const booking = new bookingController;
+const shifts = new shiftsController;
 
 routes.get("/clients", user.listUsers);
 routes.post("/clients", userCreateValidation, user.createUser);
@@ -44,9 +49,9 @@ routes.post("/employees", employeeCreateValidation, employee.createEmployee);
 routes.get("/employees/:id", employeeOneValidation, employee.oneEmployee );
 routes.delete("/employee/:id", employeeOneValidation, employee.deleteEmployee)
 
-routes.post("/typeUser",typeUserValidatioin, typeUser.createType);
+routes.post("/typeUser",typeUserValidation, typeUser.createType);
 routes.get("/typeUser", typeUser.listTypes);
-routes.put("/typeUser/:id",typeUserValidatioin,typeUser.uptadeTypeUser);
+routes.put("/typeUser/:id",typeUserValidation,typeUser.uptadeTypeUser);
 routes.delete("/typeUser/:id",typeUser.deleteType);
 routes.get("typeUser/:id",typeUser.oneTyper);
 
@@ -61,5 +66,11 @@ routes.post("/booking", bookingCreateValidation, booking.createBooking);
 routes.get("/booking/:id", bookingOneValidation, booking.findByIdBooking);
 routes.put("/booking/:id", bookingUpdateValidation, booking.updateBooking);
 routes.delete("/booking/:id", booking.deleteBooking);
+
+routes.get("/shifts", shifts.listShifts);
+routes.post("/shifts", shiftsCreateValidation, shifts.createShift);
+routes.get("/shifts/:id",shiftsOneValidation, shifts.findByIdShift);
+routes.put("/shifts/:id", shiftsUpdateValidation ,shifts.updateShift);
+routes.delete("/shifts/:id", shifts.deleteShift);
 
 export default routes;

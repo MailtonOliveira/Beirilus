@@ -48,7 +48,7 @@ class shiftsController {
       });
       res.status(201).json(createShift);
     } catch (error) {
-      next(error);
+      console.log(error);
     }
   };
 
