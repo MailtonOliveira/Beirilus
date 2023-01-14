@@ -56,9 +56,9 @@ routes.get("/services/:id", servicesOneValidation, services.findByIdServices);
 routes.put("/services/:id", servicesUpdateValidation, services.updateServices);
 routes.delete("/services/:id", services.deleteServices);
 
-routes.get("/booking", booking.listBooking);
+routes.get("/booking", booking.listBookings);
 routes.post("/booking", bookingCreateValidation, booking.createBooking);
-routes.get("/booking/:id", bookingOneValidation, booking.findByIdBooking);
+routes.get("/booking/:id", bookingOneValidation, booking.oneBooking);
 routes.put("/booking/:id", bookingUpdateValidation, booking.updateBooking);
 routes.delete("/booking/:id", booking.deleteBooking);
 

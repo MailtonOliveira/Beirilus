@@ -8,7 +8,6 @@ const selectwithoutpassword = {
   name: true,
   phone: true,
   birth: true,
-  role: true,
   typeUserId: true,
 };
 
