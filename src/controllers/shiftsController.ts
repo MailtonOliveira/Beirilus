@@ -7,7 +7,7 @@ class shiftsController {
   async listShifts(req: Request, res: Response, next: NextFunction) {
     try {
       const listShifts = await prisma.shift.findMany();
-      res.json({ listShifts });
+      return res.json({ listShifts });
     } catch (error) {
       next(error);
     }
@@ -25,10 +25,10 @@ class shiftsController {
         });
 
         if (!shift) {
-            res.status(404).json(ERRORS.USER.BYID)
+          return res.status(404).json(ERRORS.USER.BYID)
         };
 
-        res.status(200).json(shift)
+        return res.status(200).json(shift)
 
     } catch (error) {
         next(error)
@@ -46,7 +46,7 @@ class shiftsController {
           end
         },
       });
-      res.status(201).json(createShift);
+      return res.status(201).json(createShift);
     } catch (error) {
       next(error);
     }
@@ -74,10 +74,10 @@ class shiftsController {
       });
 
       if (!shiftUpdate) {
-        res.status(400).json(ERRORS.USER.BYID);
+        return res.status(400).json(ERRORS.USER.BYID);
       }
 
-      res.status(200).json(shiftUpdate);
+      return res.status(200).json(shiftUpdate);
     } catch (error) {}
   };
 
@@ -92,7 +92,7 @@ class shiftsController {
       });
 
       if (!shiftDelete) {
-        res.status(404).json(ERRORS.USER.BYID);
+        return res.status(404).json(ERRORS.USER.BYID);
       }
 
       await prisma.shift.delete({
@@ -101,7 +101,7 @@ class shiftsController {
         },
       });
 
-      res.sendStatus(204);
+      return res.sendStatus(204);
     } catch (error) {
       next(error);
     }
