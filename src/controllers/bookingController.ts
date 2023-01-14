@@ -9,7 +9,7 @@ class bookingController {
   async listBooking(req: Request, res: Response, next: NextFunction) {
     try {
       const listBooking = await prisma.booking.findMany();
-      res.json({ listBooking });
+      return res.json({ listBooking });
     } catch (error) {
       next(error);
     }
@@ -27,10 +27,10 @@ class bookingController {
         });
 
         if (!booking) {
-            res.status(404).json(ERRORS.USER.BYID)
+          return res.status(404).json(ERRORS.USER.BYID)
         };
 
-        res.status(200).json(booking)
+        return res.status(200).json(booking)
 
     } catch (error) {
         next(error)
@@ -66,7 +66,7 @@ class bookingController {
 
       }
 
-      res.status(201).json(createBooking);
+      return res.status(201).json(createBooking);
     } catch (error) {
       next(error);
     }
@@ -95,7 +95,7 @@ class bookingController {
         return res.status(400).json(ERRORS.USER.BYID);
       }
 
-      res.status(200).json(bookingUpdate);
+      return res.status(200).json(bookingUpdate);
     } catch (error) {}
   };
 
@@ -110,7 +110,7 @@ class bookingController {
       });
 
       if (!bookingDelete) {
-        res.status(404).json(ERRORS.USER.BYID);
+        return res.status(404).json(ERRORS.USER.BYID);
       }
 
       await prisma.booking.delete({
@@ -119,7 +119,7 @@ class bookingController {
         },
       });
 
-      res.sendStatus(204);
+      return res.sendStatus(204);
     } catch (error) {
       next(error);
     }
