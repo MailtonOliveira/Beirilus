@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ERRORS } from "../constants/errors";
 import prisma from "../database/prismaClient"
+import MailService from "../services/MailService";
 
 
 class bookingController {
@@ -39,6 +40,7 @@ class bookingController {
   async createBooking(req: Request, res: Response, next: NextFunction) {
     try {
       const { date, customerId, servicesId, baberId } = req.body;
+      
       const createBooking = await prisma.booking.create({
         data: {
           date,
@@ -47,7 +49,22 @@ class bookingController {
           baberId
 
         },
+      
       });
+      const mailBooking = await prisma.user.findUnique({
+        where: {
+          id: customerId
+        },
+      });
+
+
+      const sendMail = await MailService.SendMail(mailBooking?.email!, "Agendamento realizado com sucesso! <br/><br/> Não esqueça de lavar os cabelos"+createBooking, "Beirilus - Agendado com sucesso ")
+
+      if (sendMail?.status == "error") {
+        return res.status(400).json(sendMail)
+
+      }
+
       res.status(201).json(createBooking);
     } catch (error) {
       next(error);
