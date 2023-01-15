@@ -1,6 +1,6 @@
-
 import { Employee } from "@prisma/client";
 import prisma from "../database/prismaClient";
+
 
 const selectwithoutpassword = {
   id: true,
@@ -26,20 +26,20 @@ class EmployeeRepository {
     });
   }
 
-  async createEmployee(dados: Employee): Promise<any> {
-    const newPass = bcrypt.hashSync(dados.passwd, 10);
-    const typeUser = prisma.typeUser.findFirst({
-        where: {
-          type: "employee"
-        },
-      });
+  // async createEmployee(dados: Employee): Promise<any> {
+
+  //   const typeUser = prisma.typeUser.findFirst({
+  //       where: {
+  //         type: "employee"
+  //       },
+  //     });
     
-    return await prisma.employee.create({
-      data: {
-        user
-      },
-    });
-  }
+  //   return await prisma.employee.create({
+  //     data: {
+  //       user: dados.userId
+  //     },
+  //   });
+  // }
 }
 
-export default new UserRepository();
+export default new EmployeeRepository();

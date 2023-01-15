@@ -69,7 +69,7 @@ routes.delete("/booking/:id", booking.deleteBooking);
 
 routes.get("/shifts", shifts.listShifts);
 routes.post("/shifts", shiftsCreateValidation, shifts.createShift);
-routes.get("/shifts/:id",shiftsOneValidation, shifts.findByIdShift);
+routes.get("/shifts/:id",shiftsOneValidation, shifts.oneShift);
 routes.put("/shifts/:id", shiftsUpdateValidation ,shifts.updateShift);
 routes.delete("/shifts/:id", shifts.deleteShift);
 

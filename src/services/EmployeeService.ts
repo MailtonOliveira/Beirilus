@@ -1,7 +1,7 @@
 import { Employee } from '@prisma/client';
 
 
-import EmployeeRepository from '../repositories/UserRepository';
+import EmployeeRepository from '../repositories/EmployeeRepository';
 class EmployeeService {
 
     getEmployees(): Promise<Array<Employee>>{
@@ -14,10 +14,10 @@ class EmployeeService {
         return EmployeeRepository.getEmployee(employeeId)
     }
 
-    createEmployee(dados: Employee) {
+    // createEmployee(dados: Employee) {
 
-        return EmployeeRepository.createEmployee(dados)
-    }
+    //     return EmployeeRepository.createEmployee(dados)
+    // }
 
 }
 
