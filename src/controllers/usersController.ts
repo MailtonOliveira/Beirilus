@@ -52,8 +52,8 @@ class userController {
 
       const sendMail = await MailService.SendMail(
         userCreate.email,
-        "Bem vindo <br/> " + userCreate.name,
-        "Boas vindas"
+        TEXT.USER.CREATE + userCreate.name,
+        SUBJECT.USER.CREATE
       );
 
       if (sendMail?.status == "error") {

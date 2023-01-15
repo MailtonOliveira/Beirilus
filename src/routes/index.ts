@@ -39,7 +39,7 @@ const booking = new bookingController;
 const shifts = new shiftsController;
 
 routes.get("/clients", user.listUsers);
-routes.post("/clients", user.createUser);
+routes.post("/clients", userCreateValidation, user.createUser);
 routes.get("/clients/:id", userOneValidation, user.oneUser);
 routes.put("/clients/:id", userUpdateValidation, user.updateUser);
 routes.delete("/clients/:id", userOneValidation, user.deleteUser);
