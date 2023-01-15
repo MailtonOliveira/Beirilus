@@ -1,8 +1,4 @@
 import { User } from '@prisma/client';
-import { PrismaClient } from '@prisma/client';
-
-
-
 
 
 import UserRepository from '../repositories/UserRepository';
