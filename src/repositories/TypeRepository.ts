@@ -1,4 +1,5 @@
 import { TypeUser } from "@prisma/client";
+import { stringify } from "querystring";
 import prisma  from "../database/prismaClient";
 
 class TypeUsers {
@@ -18,10 +19,9 @@ class TypeUsers {
         });
     }
 
-    async getTypeUser(typeId: string, type: string): Promise<any> {
+    async getTypeUser(type: string): Promise<any> {
         return await prisma.typeUser.findFirst({
             where :{
-                id: typeId,
                 type,
             },
           

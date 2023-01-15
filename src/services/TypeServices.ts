@@ -11,9 +11,9 @@ class TypeService {
         return TypeRepository.getType(id);
         
     }
-
-    getTypeUser(id: string, type: string): Promise<TypeUser>{
-        return TypeRepository.getTypeUser(id, type);
+    
+    getTypeUser(type: string): Promise<TypeUser>{
+        return TypeRepository.getTypeUser(type);
         
     }
 

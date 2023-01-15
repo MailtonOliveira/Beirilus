@@ -1,12 +1,12 @@
 import { ERRORS } from "./../constants/errors";
 import { Request, Response, NextFunction } from "express";
-import bcrypt from "bcrypt";
 import prisma from "../database/prismaClient";
 import { User } from "@prisma/client";
 import userService from "../services/UserService";
 import MailService from "../services/MailService";
 import { TEXT } from "../constants/text";
 import { SUBJECT } from "../constants/subject";
+
 
 class userController {
   async listUsers(req: Request, res: Response, next: NextFunction) {
@@ -36,6 +36,7 @@ class userController {
 
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
+      
       const payload: User = req.body;
 
       const userObj: any = {
@@ -44,6 +45,7 @@ class userController {
         phone: payload.phone,
         birth: payload.birth,
         passwd: payload.passwd,
+        typeUserId: payload.typeUserId
       };
 
       const userCreate = await userService.createUser(userObj);
