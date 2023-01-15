@@ -1,12 +1,12 @@
 import { ERRORS } from "./../constants/errors";
 import { Request, Response, NextFunction } from "express";
-import bcrypt from "bcrypt";
-import prisma from "../database/prismaClient"
+import prisma from "../database/prismaClient";
 import { User } from "@prisma/client";
 import userService from "../services/UserService";
 import MailService from "../services/MailService";
 import { TEXT } from "../constants/text";
 import { SUBJECT } from "../constants/subject";
+
 
 class userController {
   async listUsers(req: Request, res: Response, next: NextFunction) {
@@ -36,31 +36,29 @@ class userController {
 
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, name, phone, birth, passwd, } = req.body;
-      const newPass = bcrypt.hashSync(passwd, 10);
-      const typeUser = await prisma.typeUser.findFirst({
-        where: {
-          type: "customer"
-        },
-      });
-      const userCreate = await prisma.user.create({
-        data: {
-          email,
-          name,
-          phone,
-          birth,
-          passwd: newPass,
-          typeUserId: typeUser?.id        
-        },
-      });
       
-      const sendMail = await MailService.SendMail(userCreate.email,  TEXT.USER.CREATE+userCreate.name, SUBJECT.USER.CREATE)
+      const payload: User = req.body;
+
+      const userObj: any = {
+        email: payload.email,
+        name: payload.name,
+        phone: payload.phone,
+        birth: payload.birth,
+        passwd: payload.passwd,
+        typeUserId: payload.typeUserId
+      };
+
+      const userCreate = await userService.createUser(userObj);
+
+      const sendMail = await MailService.SendMail(
+        userCreate.email,
+        TEXT.USER.CREATE + userCreate.name,
+        SUBJECT.USER.CREATE
+      );
 
       if (sendMail?.status == "error") {
-        return res.status(400).json(sendMail)
-
+        return res.status(400).json(sendMail);
       }
-      
 
       return res.status(201).json(userCreate);
     } catch (error) {
@@ -96,7 +94,7 @@ class userController {
 
       return res.status(200).json(userUpdate);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
   async deleteUser(req: Request, res: Response, next: NextFunction) {
@@ -124,8 +122,6 @@ class userController {
       next(error);
     }
   }
-
- 
 }
 
 export default userController;

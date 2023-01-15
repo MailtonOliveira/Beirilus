@@ -1,26 +1,33 @@
 import { TypeUser } from "@prisma/client";
-import prisma  from "../database/prismaClient";;
-
-const selectwithoutpassword = {
-    type: true
-};
+import { stringify } from "querystring";
+import prisma  from "../database/prismaClient";
 
 class TypeUsers {
     async getTypes(): Promise<any>{
 
         return await prisma.typeUser.findMany({
-            select: selectwithoutpassword,
+           
         });
     }
 
-    async getType(id:string): Promise<any> {
+    async getType(typeId:string): Promise<any> {
         return await prisma.typeUser.findFirst({
             where :{
-                id:id,
+                id: typeId,
             },
-            select: selectwithoutpassword,
+            
         });
     }
+
+    async getTypeUser(type: string): Promise<any> {
+        return await prisma.typeUser.findFirst({
+            where :{
+                type,
+            },
+          
+        });
+    }
+
     async createType(dados:string): Promise<any>{
         return await prisma.typeUser.create({
             data:{

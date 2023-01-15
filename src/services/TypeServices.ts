@@ -9,6 +9,12 @@ class TypeService {
 
     getType(id: string): Promise<any>{
         return TypeRepository.getType(id);
+        
+    }
+    
+    getTypeUser(type: string): Promise<TypeUser>{
+        return TypeRepository.getTypeUser(type);
+        
     }
 
     createType(dados:string): Promise<TypeUser>{

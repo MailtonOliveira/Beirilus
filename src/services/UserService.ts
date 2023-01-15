@@ -1,6 +1,7 @@
 import { User } from '@prisma/client';
 
 
+
 import UserRepository from '../repositories/UserRepository';
 class UserService {
 
@@ -18,6 +19,7 @@ class UserService {
 
         return UserRepository.createUser(dados)
     }
+    
 
 }
 
