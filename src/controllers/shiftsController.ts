@@ -7,8 +7,10 @@ import shiftService from "../services/ShiftService";
 class shiftsController {
   async listShifts(req: Request, res: Response, next: NextFunction) {
     try {
+
       const listShifts: Array<Shift> = await shiftService.getShifts();
       return res.json({ listShifts });
+
 
     } catch (error) {
       next(error);
@@ -28,6 +30,7 @@ class shiftsController {
 
         return res.status(200).json(shiftOne)
 
+
     } catch (error) {
         next(error)
     }
@@ -44,6 +47,7 @@ class shiftsController {
         end: payload.end
     };
     try {
+
 
       const shift = await shiftService.createShift(shiftObj);
       return res.status(201).json(shift);
@@ -69,6 +73,7 @@ class shiftsController {
       
 
       if (!shiftUpdate) {
+
       return res.status(400).json(ERRORS.USER.BYID);
       }
 
@@ -84,7 +89,7 @@ class shiftsController {
       const shiftDelete = await shiftService.deleteShift(id);
 
       if (!shiftDelete) {
-        res.status(404).json(ERRORS.USER.BYID);
+        return res.status(404).json(ERRORS.USER.BYID);
       }
 
       return res.sendStatus(204);

@@ -6,13 +6,14 @@ import prisma from "../database/prismaClient"
 import MailService from "../services/MailService";
 
 
+
 class bookingController {
   async listBookings(req: Request, res: Response, next: NextFunction) {
     try {
 
       const bookingsList: Array<Booking> = await bookingService.getBookings();
       return res.json({ bookingsList });
-
+      
     } catch (error) {
       next(error);
     }
@@ -30,6 +31,7 @@ class bookingController {
         };
 
         return res.status(200).json(bookingOne)
+
 
     } catch (error) {
         next(error)

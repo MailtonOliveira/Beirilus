@@ -5,6 +5,8 @@ import prisma from "../database/prismaClient"
 import { User } from "@prisma/client";
 import userService from "../services/UserService";
 import MailService from "../services/MailService";
+import { TEXT } from "../constants/text";
+import { SUBJECT } from "../constants/subject";
 
 class userController {
   async listUsers(req: Request, res: Response, next: NextFunction) {
@@ -52,7 +54,7 @@ class userController {
         },
       });
       
-      const sendMail = await MailService.SendMail(userCreate.email, "Bem vindo <br/> "+userCreate.name, "Boas vindas")
+      const sendMail = await MailService.SendMail(userCreate.email,  TEXT.USER.CREATE+userCreate.name, SUBJECT.USER.CREATE)
 
       if (sendMail?.status == "error") {
         return res.status(400).json(sendMail)
