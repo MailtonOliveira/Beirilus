@@ -3,8 +3,10 @@ import { ERRORS } from "../constants/errors";
 import prisma from "../database/prismaClient";
 import bcrypt from "bcrypt";
 
+
+
 class employeeController {
-  async listEmployees(req: Request, res: Response, next: NextFunction) {
+  async listEmployees(req: Request, res: Response, next: NextFunction)  {
     try {
       const listingEmployees = await prisma.employee.findMany();
       return res.json({ listingEmployees });

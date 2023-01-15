@@ -19,8 +19,8 @@ model Booking {
   customerId String   @db.ObjectId
   Services   Services @relation(fields: [servicesId], references: [id])
   servicesId String   @db.ObjectId
-  Baber      Employee @relation(fields: [baberId], references: [id])
-  baberId    String   @db.ObjectId
+  Barber      Employee @relation(fields: [barberId], references: [id])
+  barberId    String   @db.ObjectId
 }
 
 model User {
