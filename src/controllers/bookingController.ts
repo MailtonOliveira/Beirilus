@@ -10,11 +10,11 @@ class bookingController {
   async listBookings(req: Request, res: Response, next: NextFunction) {
     try {
 
-      const listBookings: Promise<Array<Booking>> = bookingService.getBookings();
-      return res.json({ listBookings });
+      const bookingsList: Array<Booking> = await bookingService.getBookings();
+      return res.json({ bookingsList });
 
     } catch (error) {
-      return next(error);
+      next(error);
     }
   };
 
@@ -23,7 +23,7 @@ class bookingController {
 
         const { id } = req.params;
 
-        const bookingOne = bookingService.getBooking();
+        const bookingOne = await bookingService.getBooking(id);
 
         if (!bookingOne) {
             return res.status(404).json(ERRORS.USER.BYID)
@@ -44,27 +44,25 @@ class bookingController {
         date: payload.date,
         customerId: payload.customerId,
         servicesId: payload.servicesId,
-        baberId: payload.baberId 
+        barberId: payload.barberId 
       }
       
-      const createBooking = bookingService.createBooking(bookingObj);
-
-      return res.status(201).json(createBooking);
-
+      const bookingCreate = await bookingService.createBooking(bookingObj);
       
       const mailBooking = await prisma.user.findUnique({
         where: {
-          id: customerId
+          id: payload.customerId
         },
       });
 
-
-      const sendMail = await MailService.SendMail(mailBooking?.email!, "Agendamento realizado com sucesso! <br/><br/> Não esqueça de lavar os cabelos"+createBooking, "Beirilus - Agendado com sucesso ")
+      const sendMail = await MailService.SendMail(mailBooking?.email!, "Agendamento realizado com sucesso! <br/><br/> Não esqueça de lavar os cabelos"+bookingCreate, "Beirilus - Agendado com sucesso ")
 
       if (sendMail?.status == "error") {
         return res.status(400).json(sendMail)
 
       }
+
+      return res.status(201).json(bookingCreate);
 
     } catch (error) {
       return next(error);

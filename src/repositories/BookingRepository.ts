@@ -20,13 +20,13 @@ class BookingRepository {
           date: dados.date,
           customerId: dados.customerId,
           servicesId: dados.servicesId,
-          baberId: dados.baberId
+          barberId: dados.barberId
       },
     });
 
   }
 
-  async updateBooking(id: string, dados: Shift): Promise<any> {
+  async updateBooking(id: string, dados: Booking): Promise<any> {
     return await prisma.booking.update({
       where: {
         id,
