@@ -53,7 +53,7 @@ routes.post("/typeUser",typeUserValidation, typeUser.createType);
 routes.get("/typeUser", typeUser.listTypes);
 routes.put("/typeUser/:id",typeUserValidation,typeUser.uptadeTypeUser);
 routes.delete("/typeUser/:id",typeUser.deleteType);
-routes.get("typeUser/:id",typeUser.oneTyper);
+routes.get("/typeUser/:id",typeUser.oneTyper);
 
 routes.get("/services", services.listServices);
 routes.post("/services", servicesCreateValidation, services.createServices);
