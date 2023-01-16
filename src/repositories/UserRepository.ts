@@ -20,10 +20,10 @@ class UserRepository {
     });
   }
 
-  async getUser(userId: string): Promise<any> {
+  async getUser(id: string): Promise<any> {
     return await prisma.user.findFirst({
       where: {
-        id: userId,
+        id,
       },
       select: selectwithoutpassword,
     });
@@ -40,10 +40,31 @@ class UserRepository {
         phone: dados.phone,
         birth: dados.birth,
         passwd: newPass,
-        typeUserId: userType.id,
+        typeUserId: userType.id
       },
     });
     console.log(this.createUser)
+  }
+
+  async updateUser(id: string, dados: User): Promise<any> {
+    return await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        email: dados.email,
+        name: dados.name,
+        phone: dados.phone,
+        birth: dados.birth
+      },
+    })
+  }
+  async deleteUser(id: string): Promise<any> {
+    return await prisma.user.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
 
