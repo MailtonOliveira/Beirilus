@@ -1,4 +1,3 @@
-import { type } from 'os';
 import bcrypt from "bcrypt";
 import { User } from "@prisma/client";
 import prisma from "../database/prismaClient";
