@@ -35,6 +35,24 @@ class TypeUsers {
             }
         });
     }
+    async uptadeType(id: string,dados:TypeUser): Promise<any>{
+        return await prisma.typeUser.update({
+            where:{
+                id:id,
+            },
+            data:{
+                type:dados.type
+            }
+        })
+    }
+
+    async deleteType(id:string): Promise<any>{
+        return await prisma.typeUser.delete({
+            where:{
+                id
+            },
+        });
+    }
 }
 
 export default new TypeUsers();

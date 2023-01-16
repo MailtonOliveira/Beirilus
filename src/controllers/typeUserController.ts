@@ -30,19 +30,8 @@ class typeController {
         const {id} = req.params;
         const {type} = req.body;
 
-        await prisma.typeUser.update({
-          where:{
-            id
-          },
-          data:{
-            type
-          }
-        });
-        const uptadeType = await prisma.typeUser.findFirst({
-          where:{
-            id
-          }
-        });
+        await  TypeServices.uptadeType(id,type);
+        const uptadeType = await TypeServices.getType(id);
 
         if(!uptadeType){
           return res.status(400).json(ERRORS.TYPE.ID);
@@ -74,21 +63,13 @@ class typeController {
     try {
       const { id } = req.params;
 
-      const typeDelete = await prisma.typeUser.findFirst({
-        where: {
-          id,
-        },
-      });
+      const typeDelete = await TypeServices.getType(id);
 
       if (!typeDelete) {
         return res.status(404).json(ERRORS.TYPE.ID);
       }
 
-      await prisma.typeUser.delete({
-        where: {
-          id,
-        },
-      });
+      await TypeServices.deleteType(id);
 
       return res.sendStatus(204);
     } catch (error) {

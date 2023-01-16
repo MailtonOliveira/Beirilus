@@ -21,6 +21,14 @@ class TypeService {
         return TypeRepository.createType(dados);
     }
 
+    uptadeType(id:string, dados:TypeUser): Promise<TypeUser>{
+        return TypeRepository.uptadeType(id,dados);
+    }
+
+    deleteType(id:string): Promise<any>{
+        return TypeRepository.deleteType(id);
+    }
+
 }
 
 export default new TypeService();
