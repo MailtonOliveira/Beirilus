@@ -1,21 +1,18 @@
 import { TypeUser } from "@prisma/client";
-import { stringify } from "querystring";
 import prisma  from "../database/prismaClient";
+
 
 class TypeUsers {
     async getTypes(): Promise<any>{
 
-        return await prisma.typeUser.findMany({
-           
-        });
+        return await prisma.typeUser.findMany();
     }
 
-    async getType(typeId:string): Promise<any> {
+    async getType(id:string): Promise<any> {
         return await prisma.typeUser.findFirst({
             where :{
-                id: typeId,
+                id,
             },
-            
         });
     }
 
@@ -38,7 +35,7 @@ class TypeUsers {
     async uptadeType(id: string,dados:TypeUser): Promise<any>{
         return await prisma.typeUser.update({
             where:{
-                id:id,
+                id,
             },
             data:{
                 type:dados.type
