@@ -79,7 +79,9 @@ class shiftsController {
 
       return res.status(200).json(shiftUpdate);
 
-    } catch (error) {}
+    } catch (error) {
+      next(error);
+    }
   };
 
   async deleteShift(req: Request, res: Response, next: NextFunction) {

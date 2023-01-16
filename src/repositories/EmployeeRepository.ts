@@ -1,5 +1,7 @@
-import { Employee } from "@prisma/client";
+import { Employee, User } from "@prisma/client";
+import userController from "../controllers/usersController";
 import prisma from "../database/prismaClient";
+import UserService from "../services/UserService";
 
 
 const selectwithoutpassword = {
@@ -26,20 +28,20 @@ class EmployeeRepository {
     });
   }
 
-  // async createEmployee(dados: Employee): Promise<any> {
+  async createEmployee(dados: Employee ): Promise<any> {
 
-  //   const typeUser = prisma.typeUser.findFirst({
-  //       where: {
-  //         type: "employee"
-  //       },
-  //     });
-    
-  //   return await prisma.employee.create({
-  //     data: {
-  //       user: dados.userId
-  //     },
-  //   });
-  // }
+    const typeUser = prisma.typeUser.findFirst({
+        where: {
+          type: "employee"
+        },
+      });
+
+    return await prisma.employee.create({
+      data: {
+       userId: dados.userId
+    }
+  });
+  }
 }
 
 export default new EmployeeRepository();
