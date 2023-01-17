@@ -29,14 +29,17 @@ class EmployeeRepository {
 
   async createEmployee(dados: any): Promise<any> {
 
-    // const newPass = bcrypt.hashSync(dados.userId, 10);
-    const typeUser = prisma.typeUser.findFirst({
+    const user = dados;
+    const newPass = bcrypt.hashSync(user.create.passwd, 10);
+    user.create.passwd = newPass;
+    
+    const typeUser = await prisma.typeUser.findFirst({
         where: {
           type: "employee"
         },
       });
 
-    const user = dados;
+    user.create.typeUserId = typeUser?.id;
     
     return await prisma.employee.create({
       data:{
