@@ -2,7 +2,7 @@ import { ERRORS } from "./../constants/errors";
 import { Request, Response, NextFunction } from "express";
 import prisma from "../database/prismaClient";
 import { User } from "@prisma/client";
-import userService from "../services/UserService";
+import UserService from "../services/UserService";
 import MailService from "../services/MailService";
 import { TEXT } from "../constants/text";
 import { SUBJECT } from "../constants/subject";
@@ -11,7 +11,7 @@ import { SUBJECT } from "../constants/subject";
 class userController {
   async listUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const listUsers: Array<User> = await userService.getUsers();
+      const listUsers: Array<User> = await UserService.getUsers();
       res.json({ listUsers });
     } catch (error) {
       return next(error);
@@ -22,7 +22,7 @@ class userController {
     try {
       const { id } = req.params;
 
-      const userOne = await userService.getUser(id);
+      const userOne = await UserService.getUser(id);
 
       if (!userOne) {
         return res.status(404).json(ERRORS.USER.BYID);
@@ -48,7 +48,7 @@ class userController {
         typeUserId: payload.typeUserId
       };
 
-      const userCreate = await userService.createUser(userObj);
+      const userCreate = await UserService.createUser(userObj);
 
       const sendMail = await MailService.SendMail(
         userCreate.email,
@@ -69,24 +69,15 @@ class userController {
   async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { email, name, phone, birth } = req.body;
+      const payload: User = req.body;
 
-      await prisma.user.update({
-        where: {
-          id,
-        },
-        data: {
-          email,
-          name,
-          phone,
-          birth,
-        },
-      });
-      const userUpdate = await prisma.user.findFirst({
-        where: {
-          id,
-        },
-      });
+      const userObj: any = {
+        email: payload.email,
+        name: payload.name,
+        phone: payload.phone,
+        birth: payload.birth
+      };
+      const userUpdate = await UserService.updateUser(id, userObj);
 
       if (!userUpdate) {
         return res.status(400).json(ERRORS.USER.BYID);
@@ -101,21 +92,11 @@ class userController {
     try {
       const { id } = req.params;
 
-      const userDelete = await prisma.user.findFirst({
-        where: {
-          id,
-        },
-      });
+      const userDelete = await UserService.deleteUser(id)
 
       if (!userDelete) {
         return res.status(404).json(ERRORS.USER.BYID);
       }
-
-      await prisma.user.delete({
-        where: {
-          id,
-        },
-      });
 
       return res.sendStatus(204);
     } catch (error) {

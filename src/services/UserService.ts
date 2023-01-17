@@ -1,7 +1,4 @@
 import { User } from '@prisma/client';
-
-
-
 import UserRepository from '../repositories/UserRepository';
 class UserService {
 
@@ -19,7 +16,14 @@ class UserService {
 
         return UserRepository.createUser(dados)
     }
-    
+    updateUser(id: string, dados: User) {
+
+        return UserRepository.updateUser(id, dados)
+    }
+    deleteUser(id: string){
+
+        return UserRepository.deleteUser(id)
+    }
 
 }
 
