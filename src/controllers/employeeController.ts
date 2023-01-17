@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import { ERRORS } from "../constants/errors";
 import prisma from "../database/prismaClient";
 import bcrypt from "bcrypt";
+import { User } from "@prisma/client";
+import EmployeeService from "../services/EmployeeService";
 
 
 
@@ -38,23 +40,13 @@ class employeeController {
 
   async createEmployee(req: Request, res: Response, next: NextFunction) {
     try {
+
       const { user } = req.body;
-      const newPass = bcrypt.hashSync(user.create.passwd, 10);
-      user.create.passwd = newPass
-      const typeUser = await prisma.typeUser.findFirst({
-        where: {
-          type: "employee",
-        },
-      });
 
-      user.create.typeUserId = typeUser?.id
-      user.create.type = "employee"
+      // payload.create.typeUserId = typeUser?.id
+      // payload.create.type = "employee"
 
-      const employeeCreate = await prisma.employee.create({
-        data: {
-          user,
-        },
-      });
+      const employeeCreate = await EmployeeService.createEmployee(user);
 
       if (!employeeCreate) {
         return res.status(404).json(ERRORS.EMPLOYEE.ID);
@@ -62,33 +54,30 @@ class employeeController {
 
         return res.status(200).json(employeeCreate);
     } catch (error) {
-      next(error);
+      console.log(error);
     }
   }
 
   async deleteEmployee(req: Request, res: Response, next: NextFunction) {
     try {
+
       const { id } = req.params;
 
-      const employeeDelete = await prisma.employee.findFirst({
-        where: {
-          id,
-        },
-      });
+      const employeeDelete = await EmployeeService.deleteEmployee(id);
 
       if (!employeeDelete) {
         return res.status(404).json(ERRORS.USER.BYID);
       }
 
-      await prisma.user.delete({
-        where: {
-          id,
-        },
-      });
+      
+
+      if (!employeeDelete) {
+        return res.status(404).json(ERRORS.USER.BYID);
+      }
 
       return res.sendStatus(204);
     } catch (error) {
-      next(error);
+      console.log(error);
     }
   }
 }

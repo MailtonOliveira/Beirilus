@@ -1,5 +1,6 @@
-import { Employee } from "@prisma/client";
+import { Employee, User } from "@prisma/client";
 import prisma from "../database/prismaClient";
+import bcrypt from "bcrypt";
 
 
 const selectwithoutpassword = {
@@ -26,20 +27,37 @@ class EmployeeRepository {
     });
   }
 
-  // async createEmployee(dados: Employee): Promise<any> {
+  async createEmployee(dados: any): Promise<any> {
 
-  //   const typeUser = prisma.typeUser.findFirst({
-  //       where: {
-  //         type: "employee"
-  //       },
-  //     });
+    // const newPass = bcrypt.hashSync(dados.userId, 10);
+    const typeUser = prisma.typeUser.findFirst({
+        where: {
+          type: "employee"
+        },
+      });
+
+    const user = dados;
     
-  //   return await prisma.employee.create({
-  //     data: {
-  //       user: dados.userId
-  //     },
-  //   });
-  // }
+    return await prisma.employee.create({
+      data:{
+        user,
+      }
+       })
+  }
+  
+  async deleteEmployee(id: string): Promise<any> {
+    await prisma.employee.findFirst({
+      where: {
+        id,
+      },
+    });
+    return await prisma.employee.delete({
+      where: {
+        id,
+      }
+    })
+  }
 }
+
 
 export default new EmployeeRepository();

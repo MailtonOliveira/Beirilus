@@ -14,7 +14,7 @@ class BookingRepository {
     });
   }
 
-  async createBooking(dados: Booking): Promise<any> {
+  async createBooking(dados: any): Promise<any> {
     return await prisma.booking.create({
       data: {
           date: dados.date,

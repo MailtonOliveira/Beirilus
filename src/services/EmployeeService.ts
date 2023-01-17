@@ -1,4 +1,4 @@
-import { Employee } from '@prisma/client';
+import { Employee, User } from '@prisma/client';
 
 
 import EmployeeRepository from '../repositories/EmployeeRepository';
@@ -14,10 +14,14 @@ class EmployeeService {
         return EmployeeRepository.getEmployee(employeeId)
     }
 
-    // createEmployee(dados: Employee) {
+    createEmployee(dados: User) {
 
-    //     return EmployeeRepository.createEmployee(dados)
-    // }
+        return EmployeeRepository.createEmployee(dados)
+    }
+
+    deleteEmployee(id:string) {
+        return EmployeeRepository.deleteEmployee(id)
+    }
 
 }
 
