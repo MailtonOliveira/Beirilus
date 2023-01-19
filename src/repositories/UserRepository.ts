@@ -19,12 +19,23 @@ class UserRepository {
     });
   }
 
-  async getUser(id: string): Promise<any> {
+  async getUser(id?: string, fields?: any, filter?: any): Promise<any> {
+    let selectFields: any = {};
+    if(fields) {
+      selectFields = fields;
+    } else {
+      selectFields = selectwithoutpassword;
+    }
+    if(id == ""){
+      return await prisma.user.findFirst({
+        where:filter,
+        select: selectFields})
+    }
     return await prisma.user.findFirst({
-      where: {
+      where: filter ? filter :  {  // mesmo teste da linha 24 - operador ternário
         id,
       },
-      select: selectwithoutpassword,
+      select: selectFields,
     });
   }
 

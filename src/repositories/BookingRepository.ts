@@ -1,5 +1,7 @@
 import { Booking } from "@prisma/client";
 import prisma from "../database/prismaClient";
+import moment from "moment-timezone";
+import ServicesService from "../services/ServicesService";
 
 class BookingRepository {
   async getBookings(): Promise<Array<any>> {
@@ -15,27 +17,41 @@ class BookingRepository {
   }
 
   async createBooking(dados: any): Promise<any> {
+
+    const startDate = moment(dados.startDate).tz("America/Sao_Paulo");
+    const getService = await ServicesService.getService(dados.servicesId);
+    const endDate = startDate.add(getService.duration, "hours");
+    const endDateString = endDate.toString();
+    
+    
+
     return await prisma.booking.create({
       data: {
-          date: dados.date,
+          startDate: dados.start,
+          endDate: endDateString,
           customerId: dados.customerId,
           servicesId: dados.servicesId,
           barberId: dados.barberId
       },
     });
-
-  }
-
-  async updateBooking(id: string, dados: Booking): Promise<any> {
-    return await prisma.booking.update({
+    if(dados.startDate >= ){
+      
+    }
+    const checkAvailability = await prisma.booking.findFirst({
       where: {
-        id,
-      },
-      data: {
-          date: dados.date,       // confirmar com o grupo se apenas esse campo será disponibilizado para update   
-      },
-    })
+       barberId: dados.barberId,
+       startDate: // aqui vc precisa testar se a data da intenção de agendamento colide com as datas já agendadas para este barber. Pra isso vamos usar o "less than equal", que significa 'menor ou igual a' e o "greater than equal", que é o 'maior ou igual a'.
+       {
+        gte {
+         new Date(dados.startDate) //a data de inicio é maior ou igual a data de inicio desejada
+        },
+        lte {
+         new Date(endDate) //a data de término é menor ou igual a data de finalização prevista
+        }
+    }
+
   }
+});
 
   async deleteBooking(id:string):Promise<any> {
     return await prisma.booking.delete({
