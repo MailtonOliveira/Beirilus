@@ -17,7 +17,7 @@ class BookingRepository {
 
   async createBooking(dados: any): Promise<any> {
 
-    const startDate = moment(dados.startDate).tz("America/Sao_Paulo");
+    
     const getService = await ServicesService.getService(dados.servicesId);
     const endDate = startDate.add(getService.duration.toString(), "hours");
     
