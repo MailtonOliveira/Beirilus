@@ -2,89 +2,82 @@ import { Request, Response, NextFunction } from "express";
 import { ERRORS } from "../constants/errors";
 import { Booking } from "@prisma/client";
 import bookingService from "../services/BookingService";
-import prisma from "../database/prismaClient"
+import prisma from "../database/prismaClient";
 import MailService from "../services/MailService";
-
-
+import UserService from "../services/UserService";
+import ServicesService from "../services/ServicesService";
+import { TEXT } from "../constants/text";
+import { SUBJECT } from "../constants/subject";
 
 class bookingController {
   async listBookings(req: Request, res: Response, next: NextFunction) {
     try {
-
       const bookingsList: Array<Booking> = await bookingService.getBookings();
       return res.json({ bookingsList });
-      
     } catch (error) {
       next(error);
     }
-  };
+  }
 
   async oneBooking(req: Request, res: Response, next: NextFunction) {
     try {
+      const { id } = req.params;
 
-        const { id } = req.params;
+      const bookingOne = await bookingService.getBooking(id);
 
-        const bookingOne = await bookingService.getBooking(id);
+      if (!bookingOne) {
+        return res.status(404).json(ERRORS.USER.BYID);
+      }
 
-        if (!bookingOne) {
-            return res.status(404).json(ERRORS.USER.BYID)
-        };
-
-        return res.status(200).json(bookingOne)
-
-
+      return res.status(200).json(bookingOne);
     } catch (error) {
-        next(error)
+      next(error);
     }
-
-  };
+  }
 
   async createBooking(req: Request, res: Response, next: NextFunction) {
     try {
-      const payload:any = req.body;
+      const payload: any = req.body;
       const bookingObj: any = {
-        date: payload.date,
+        startDate: payload.startDate,
         customerId: payload.customerId,
         servicesId: payload.servicesId,
-        barberId: payload.barberId 
-      }
-      
+        barberId: payload.barberId,
+      };
+
+      // const service = await ServicesService.getService(payload.servicesId);
+      // const endDate = service.duration + bookingObj.startDate;
+
       const bookingCreate = await bookingService.createBooking(bookingObj);
-      
-      const mailBooking = await prisma.user.findUnique({
-        where: {
-          id: payload.customerId
-        },
-      });
 
-      const sendMail = await MailService.SendMail(mailBooking?.email!, "Agendamento realizado com sucesso! <br/><br/> Não esqueça de lavar os cabelos"+bookingCreate, "Beirilus - Agendado com sucesso ")
+      const mailBookingUser = await UserService.getUser(payload.customerId);
 
-      if (sendMail?.status == "error") {
-        return res.status(400).json(sendMail)
+      const mailBookingEmployee = await UserService.getUser(payload.barberId);
 
+      const sendMailUser = await MailService.SendMail(
+        mailBookingUser?.email!,
+        TEXT.BOOKING_CUSTOMER.CREATE + bookingCreate,
+        SUBJECT.BOOKING_CUSTOMER.CREATE
+      );
+      const sendMailEmployee = await MailService.SendMail(
+        mailBookingEmployee?.email!,
+        TEXT.BOOKING_EMPLOYEE.CREATE + bookingCreate,
+        SUBJECT.BOOKING_EMPLOYEE.CREATE
+      );
+
+      if (sendMailUser?.status == "error") {
+        return res.status(400).json(sendMailUser);
+      }
+
+      if (sendMailEmployee?.status == "error") {
+        return res.status(400).json(sendMailEmployee);
       }
 
       return res.status(201).json(bookingCreate);
-
     } catch (error) {
       return next(error);
     }
-  };
-
-  async updateBooking(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params;
-      const { date } = req.body;
-
-      const bookingUpdate = await bookingService.updateBooking(id, date);
-
-      if (!bookingUpdate) {
-        return res.status(400).json(ERRORS.USER.BYID);
-      }
-
-      return res.status(200).json(bookingUpdate);
-    } catch (error) {}
-  };
+  }
 
   async deleteBooking(req: Request, res: Response, next: NextFunction) {
     try {
@@ -97,11 +90,10 @@ class bookingController {
       }
 
       return res.sendStatus(204);
-
     } catch (error) {
       next(error);
     }
-  };
-};
+  }
+}
 
 export default bookingController;

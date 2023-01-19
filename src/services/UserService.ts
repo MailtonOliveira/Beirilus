@@ -7,9 +7,9 @@ class UserService {
         return  UserRepository.getUsers()
     }
 
-    getUser(userId: string): Promise<User>{
+    getUser(userId?: string, fields?: any, filter?: any): Promise<User>{
 
-        return UserRepository.getUser(userId)
+        return UserRepository.getUser(userId, fields, filter)
     }
 
     createUser(dados: User) {
