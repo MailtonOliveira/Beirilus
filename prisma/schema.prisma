@@ -12,15 +12,16 @@ datasource db {
 
 model Booking {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  date       DateTime @unique
+  startDate  String   @unique
+  endDate    String   @unique
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   customer   User     @relation(fields: [customerId], references: [id])
   customerId String   @db.ObjectId
   Services   Services @relation(fields: [servicesId], references: [id])
   servicesId String   @db.ObjectId
-  Barber      Employee @relation(fields: [barberId], references: [id])
-  barberId    String   @db.ObjectId
+  Barber     Employee @relation(fields: [barberId], references: [id])
+  barberId   String   @db.ObjectId
 }
 
 model User {
@@ -35,8 +36,6 @@ model User {
   booking    Booking[]
   typeUser   TypeUser?  @relation(fields: [typeUserId], references: [id])
   typeUserId String?    @db.ObjectId
-  Shift      Shift?     @relation(fields: [shiftId], references: [id])
-  shiftId    String?    @db.ObjectId
   Employee   Employee[]
 
   @@map("Users")
@@ -58,7 +57,7 @@ model Services {
   price       String
   name        String
   description String
-  duration    DateTime
+  duration    Int
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   booking     Booking[]
@@ -76,16 +75,6 @@ model TypeUser {
   @@map("Types")
 }
 
-model Shift {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  weekDay   String
-  start     String
-  end       String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User[]
-}
-
 model Config {
   id               String   @id @default(auto()) @map("_id") @db.ObjectId
   mail_host        String?
@@ -96,3 +85,5 @@ model Config {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
+
+

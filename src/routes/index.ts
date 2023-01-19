@@ -3,7 +3,7 @@ import userController from './../controllers/usersController';
 import employeeController from '../controllers/employeeController';
 import servicesController from '../controllers/servicesController';
 import bookingController from '../controllers/bookingController';
-import shiftsController from '../controllers/shiftsController';
+import BusinessHoursController from '../controllers/businessHoursController';
 
 import express from "express";
 
@@ -36,7 +36,7 @@ const employee = new employeeController;
 const typeUser = new typeController;
 const services = new servicesController;
 const booking = new bookingController;
-const shifts = new shiftsController;
+const businessHours = new BusinessHoursController;
 
 routes.get("/clients", user.listUsers);
 routes.post("/clients", userCreateValidation, user.createUser);
@@ -64,13 +64,6 @@ routes.delete("/services/:id", services.deleteServices);
 routes.get("/booking", booking.listBookings);
 routes.post("/booking", bookingCreateValidation, booking.createBooking);
 routes.get("/booking/:id", bookingOneValidation, booking.oneBooking);
-routes.put("/booking/:id", bookingUpdateValidation, booking.updateBooking);
 routes.delete("/booking/:id", booking.deleteBooking);
-
-routes.get("/shifts", shifts.listShifts);
-routes.post("/shifts", shiftsCreateValidation, shifts.createShift);
-routes.get("/shifts/:id",shiftsOneValidation, shifts.oneShift);
-routes.put("/shifts/:id", shiftsUpdateValidation ,shifts.updateShift);
-routes.delete("/shifts/:id", shifts.deleteShift);
 
 export default routes;

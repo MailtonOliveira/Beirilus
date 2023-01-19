@@ -19,10 +19,6 @@ class BookingService {
         return BookingRepository.createBooking(dados)
     }
 
-    updateBooking(id: string, dados: Booking) {
-
-        return BookingRepository.updateBooking(id, dados)
-    }
 
     deleteBooking(id: string){
 
