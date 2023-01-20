@@ -2,6 +2,7 @@ import prisma from "../database/prismaClient";
 import moment from "moment-timezone";
 import ServicesService from "../services/ServicesService";
 
+
 class BookingRepository {
   async getBookings(): Promise<Array<any>> {
     return await prisma.booking.findMany();
@@ -18,11 +19,14 @@ class BookingRepository {
   async createBooking(dados: any): Promise<any> {
 
     const startDate = moment(dados.startDate).tz("America/Sao_Paulo");
+    const endDate = moment(dados.endDate).tz("America/Sao_Paulo");
+    
     const getService = await ServicesService.getService(dados.servicesId);
-    const endDate = startDate.add(getService.duration.toString(), "hours");
+    
+    // const endDate = startDate.add(getService.duration.toString(), "hours");
     
     const checkAvailability = await this.checkBookingAvailability(dados.barberId, startDate.format("YYYY-MM-DD HH:mm:ss"), endDate.format("YYYY-MM-DD HH:mm:ss"))
-
+   
 
     if (checkAvailability) {
 
@@ -84,13 +88,15 @@ class BookingRepository {
 
     
 
-    const dayStart = moment().hour(8).minute(0).second(0).tz("America/Sao_Paulo");
+    const dayStart = moment().hour(9).minute(0).second(0).tz("America/Sao_Paulo");
     const dayEnd = moment().hour(18).minute(0).second(0).tz("America/Sao_Paulo");
+    
 
     let availableBookings = [];
 
 
     while (dayStart.isSameOrBefore(dayEnd)) {
+      
       const endDate = dayStart.add(serviceDuration.duration.toString(), "hours");
 
       const checkAvailability = await this.checkBookingAvailability(barberId, dayStart.format("YYYY-MM-DD HH:mm:ss"), endDate.format("YYYY-MM-DD HH:mm:ss"));
@@ -102,13 +108,16 @@ class BookingRepository {
         })
       }
       dayStart.add(1, 'hour');
+      
 
     }
+    
 
 
     return availableBookings;
+    
 
-  }
+  } 
 
 }
 

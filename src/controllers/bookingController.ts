@@ -79,7 +79,7 @@ class bookingController {
 
       return res.status(201).json({bookingCreate,linkEmail});
     } catch (error) {
-      return next(error);
+       next(error);
     }
   }
 
