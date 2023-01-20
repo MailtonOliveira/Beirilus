@@ -4,6 +4,7 @@ import prisma from "../database/prismaClient";
 import bcrypt from "bcrypt";
 import { User } from "@prisma/client";
 import EmployeeService from "../services/EmployeeService";
+import UserService from "../services/UserService";
 
 
 
@@ -63,7 +64,11 @@ class employeeController {
 
       const { id } = req.params;
 
+      const employee = await EmployeeService.getEmployee(id);
+      const userId = employee.userId;
+
       const employeeDelete = await EmployeeService.deleteEmployee(id);
+      await UserService.deleteUser(userId);
 
       if (!employeeDelete) {
         return res.status(404).json(ERRORS.USER.BYID);
