@@ -40,7 +40,6 @@ class bookingController {
       const payload: any = req.body;
       const bookingObj: any = {
         startDate: payload.startDate,
-        endDate: payload.endDate,
         customerId: payload.customerId,
         servicesId: payload.servicesId,
         barberId: payload.barberId,
