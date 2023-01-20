@@ -19,7 +19,6 @@ import servicesUpdateValidation from '../validations/services/update';
 
 import bookingCreateValidation from '../validations/booking/create';
 import bookingOneValidation from '../validations/booking/getOne';
-import bookingUpdateValidation from '../validations/booking/update';
 
 import typeUserValidation from '../validations/typeUser/create';
 
