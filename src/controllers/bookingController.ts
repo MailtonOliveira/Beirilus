@@ -56,7 +56,7 @@ class bookingController {
 
       const mailBookingEmployee = await UserService.getUser(payload.barberId);
 
-      const linkEmail = LinkEmailService.gerarLink(payload.startDate,"google");
+      const linkEmail = LinkEmailService.gerarLink(payload.startDate);
 
       const sendMailUser = await MailService.SendMail(
         mailBookingUser?.email!,

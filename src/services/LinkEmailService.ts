@@ -2,17 +2,21 @@ import { google,outlook } from "calendar-link";
 
 class LinkEmailService{
 
- gerarLink(data:Date,type:string):string{
+ gerarLink(data:string){
 
-    let link = ""
+    const link = {
+        linkGoogle :"",
+        linkOutlook:""
+    };
+    let date = new Date(data);
     const event = {
         title: "Horário de Agendamento",
-        start: data
+        start: date
     }
 
-    if(type == "google") { link =  google(event) }
+        link.linkGoogle =  google(event); 
 
-    if(type == "outlook") { link = outlook(event) }
+        link.linkOutlook = outlook(event);
 
     return link;
 }
