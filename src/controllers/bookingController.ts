@@ -8,6 +8,7 @@ import UserService from "../services/UserService";
 import ServicesService from "../services/ServicesService";
 import { TEXT } from "../constants/text";
 import { SUBJECT } from "../constants/subject";
+import LinkEmailService from "../services/LinkEmailService";
 
 class bookingController {
   async listBookings(req: Request, res: Response, next: NextFunction) {
@@ -54,6 +55,8 @@ class bookingController {
 
       const mailBookingEmployee = await UserService.getUser(payload.barberId);
 
+      const linkEmail = LinkEmailService.gerarLink(payload.startDate,"google");
+
       const sendMailUser = await MailService.SendMail(
         mailBookingUser?.email!,
         TEXT.BOOKING_CUSTOMER.CREATE + bookingCreate,
@@ -73,7 +76,7 @@ class bookingController {
         return res.status(400).json(sendMailEmployee);
       }
 
-      return res.status(201).json(bookingCreate);
+      return res.status(201).json({bookingCreate,linkEmail});
     } catch (error) {
       return next(error);
     }

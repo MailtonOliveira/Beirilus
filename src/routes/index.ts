@@ -3,7 +3,7 @@ import userController from './../controllers/usersController';
 import employeeController from '../controllers/employeeController';
 import servicesController from '../controllers/servicesController';
 import bookingController from '../controllers/bookingController';
-import BusinessHoursController from '../controllers/businessHoursController';
+//import BusinessHoursController from '../controllers/businessHoursController';
 
 import express from "express";
 
@@ -36,7 +36,7 @@ const employee = new employeeController;
 const typeUser = new typeController;
 const services = new servicesController;
 const booking = new bookingController;
-const businessHours = new BusinessHoursController;
+//const businessHours = new BusinessHoursController;
 
 routes.get("/clients", user.listUsers);
 routes.post("/clients", userCreateValidation, user.createUser);
