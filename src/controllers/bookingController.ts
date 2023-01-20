@@ -8,6 +8,7 @@ import UserService from "../services/UserService";
 import ServicesService from "../services/ServicesService";
 import { TEXT } from "../constants/text";
 import { SUBJECT } from "../constants/subject";
+import LinkEmailService from "../services/LinkEmailService";
 
 class bookingController {
   async listBookings(req: Request, res: Response, next: NextFunction) {
@@ -40,7 +41,6 @@ class bookingController {
       const payload: any = req.body;
       const bookingObj: any = {
         startDate: payload.startDate,
-        endDate: payload.endDate,
         customerId: payload.customerId,
         servicesId: payload.servicesId,
         barberId: payload.barberId,
@@ -54,6 +54,8 @@ class bookingController {
       const mailBookingUser = await UserService.getUser(payload.customerId);
 
       const mailBookingEmployee = await UserService.getUser(payload.barberId);
+
+      const linkEmail = LinkEmailService.gerarLink(payload.startDate);
 
       const sendMailUser = await MailService.SendMail(
         mailBookingUser?.email!,
@@ -74,9 +76,9 @@ class bookingController {
         return res.status(400).json(sendMailEmployee);
       }
 
-      return res.status(201).json(bookingCreate);
+      return res.status(201).json({bookingCreate,linkEmail});
     } catch (error) {
-      return next(error);
+       next(error);
     }
   }
 
