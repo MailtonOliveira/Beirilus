@@ -3,7 +3,6 @@ import userController from './../controllers/usersController';
 import employeeController from '../controllers/employeeController';
 import servicesController from '../controllers/servicesController';
 import bookingController from '../controllers/bookingController';
-//import BusinessHoursController from '../controllers/businessHoursController';
 
 import express from "express";
 
@@ -20,7 +19,6 @@ import servicesUpdateValidation from '../validations/services/update';
 
 import bookingCreateValidation from '../validations/booking/create';
 import bookingOneValidation from '../validations/booking/getOne';
-import bookingUpdateValidation from '../validations/booking/update';
 
 import typeUserValidation from '../validations/typeUser/create';
 
@@ -36,7 +34,6 @@ const employee = new employeeController;
 const typeUser = new typeController;
 const services = new servicesController;
 const booking = new bookingController;
-//const businessHours = new BusinessHoursController;
 
 routes.get("/clients", user.listUsers);
 routes.post("/clients", userCreateValidation, user.createUser);
