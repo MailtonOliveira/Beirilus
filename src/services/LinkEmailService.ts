@@ -11,7 +11,7 @@ class LinkEmailService {
     };
     
     let date = new Date(data);
-    const startDate = moment(data).tz("America/Ohio");
+    const startDate = moment(data).tz("America/New_York");
     const endDate = startDate.clone().add( 1, "hour")
     const event = {
       title: SUBJECT.BOOKING_CUSTOMER.CREATE,
