@@ -11,17 +11,19 @@ datasource db {
 }
 
 model Booking {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  startDate  String   @unique
-  endDate    String   @unique
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  customer   User     @relation(fields: [customerId], references: [id])
-  customerId String   @db.ObjectId
-  Services   Services @relation(fields: [servicesId], references: [id])
-  servicesId String   @db.ObjectId
-  Barber     Employee @relation(fields: [barberId], references: [id])
-  barberId   String   @db.ObjectId
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  startDate   String   @unique
+  endDate     String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  customer    User     @relation(fields: [customerId], references: [id])
+  customerId  String   @db.ObjectId
+  Services    Services @relation(fields: [servicesId], references: [id])
+  servicesId  String   @db.ObjectId
+  Barber      Employee @relation(fields: [barberId], references: [id])
+  barberId    String   @db.ObjectId
+  linkGoogle  String
+  linkOutlook String
 }
 
 model User {
@@ -85,5 +87,3 @@ model Config {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
-
-

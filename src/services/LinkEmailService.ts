@@ -1,25 +1,32 @@
-import { google,outlook } from "calendar-link";
+import { google, outlook } from "calendar-link";
+import moment from "moment-timezone";
+import { TEXT } from "../constants/text";
+import { SUBJECT } from "../constants/subject";
 
-class LinkEmailService{
-
- gerarLink(data:string){
-
+class LinkEmailService {
+  gerarLink(data: string) {
     const link = {
-        linkGoogle :"",
-        linkOutlook:""
+      linkGoogle: "",
+      linkOutlook: "",
     };
+    
     let date = new Date(data);
+    const startDate = moment(data).tz("America/Ohio");
+    const endDate = startDate.clone().add( 1, "hour")
     const event = {
-        title: "Horário de Agendamento",
-        start: date
-    }
+      title: SUBJECT.BOOKING_CUSTOMER.CREATE,
+      description: TEXT.BOOKING_CUSTOMER.CREATE,
+      start: date,
+      end: endDate
+    };
 
-        link.linkGoogle =  google(event); 
+    link.linkGoogle = google(event);
 
-        link.linkOutlook = outlook(event);
+    link.linkOutlook = outlook(event);
 
     return link;
+  }
 }
-}
+
 
 export default new LinkEmailService();
