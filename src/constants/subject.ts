@@ -1,20 +1,20 @@
 export const SUBJECT = {
     USER: {
-        CREATE: "Seja bem vindo.",
-        UPDATE: "",
-        DELETE: "",
+        CREATE: "Boas-vindas",
+        UPDATE: "Confirmação de usuário",
+        DELETE: "Usuário deletado",
     },
 
     BOOKING_CUSTOMER: {
-        CREATE: "",
-        UPDATE: "",
-        DELETE: "",
+        CREATE: "Agendamento na Berillo's Barbearia",
+        UPDATE: "Reagendamento na Berillo's Barbearia",
+        DELETE: "Cancelamento na Berillo's Barbearia",
     },
 
     BOOKING_EMPLOYEE: {
-        CREATE: "",
-        UPDATE: "",
-        DELETE: "",
+        CREATE: "Agendamento na Berillo's Barbearia",
+        UPDATE: "Reagendamento na Berillo's Barbearia",
+        DELETE: "Cancelamento na Berillo's Barbearia",
     },
 
 };
