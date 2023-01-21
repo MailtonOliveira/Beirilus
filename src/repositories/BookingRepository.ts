@@ -17,7 +17,7 @@ class BookingRepository {
   }
 
   async createBooking(dados: any): Promise<any> {
-    const startDate = moment(dados.startDate).tz("America/Ohio");
+    const startDate = moment(dados.startDate).tz("America/New_York");
     const linkEmail = LinkEmailService.gerarLink(dados.startDate);
     const getService = await ServicesService.getService(dados.servicesId);
     const endDate = startDate
@@ -63,7 +63,7 @@ class BookingRepository {
       .hour(0)
       .minute(0)
       .second(0)
-      .tz("America/Sao_Paulo")
+      .tz("America/New_York")
       .format("YYYY-MM-DD HH:mm:ss");
 
     const bookings = await prisma.booking.findMany({
@@ -94,12 +94,12 @@ class BookingRepository {
       .hour(9)
       .minute(0)
       .second(0)
-      .tz("America/Sao_Paulo");
+      .tz("America/New_York");
     const dayEnd = moment()
       .hour(18)
       .minute(0)
       .second(0)
-      .tz("America/Sao_Paulo");
+      .tz("America/New_York");
 
     let availableBookings = [];
 
