@@ -2,13 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import { ERRORS } from "../constants/errors";
 import { Booking } from "@prisma/client";
 import bookingService from "../services/BookingService";
-import prisma from "../database/prismaClient";
 import MailService from "../services/MailService";
 import UserService from "../services/UserService";
-import ServicesService from "../services/ServicesService";
 import { TEXT } from "../constants/text";
 import { SUBJECT } from "../constants/subject";
-import LinkEmailService from "../services/LinkEmailService";
 
 class bookingController {
   async listBookings(req: Request, res: Response, next: NextFunction) {
@@ -55,7 +52,7 @@ class bookingController {
 
       const mailBookingEmployee = await UserService.getUser(payload.barberId);
 
-      const linkEmail = LinkEmailService.gerarLink(payload.startDate);
+      // const linkEmail = LinkEmailService.gerarLink(payload.startDate);
 
       const sendMailUser = await MailService.SendMail(
         mailBookingUser?.email!,
@@ -76,7 +73,7 @@ class bookingController {
         return res.status(400).json(sendMailEmployee);
       }
 
-      return res.status(201).json({bookingCreate,linkEmail});
+      return res.status(201).json({bookingCreate});
     } catch (error) {
        next(error);
     }
