@@ -1,6 +1,5 @@
 import { ERRORS } from "./../constants/errors";
 import { Request, Response, NextFunction } from "express";
-import prisma from "../database/prismaClient";
 import { User } from "@prisma/client";
 import UserService from "../services/UserService";
 import MailService from "../services/MailService";

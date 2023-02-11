@@ -53,7 +53,6 @@ class UserRepository {
         typeUserId: userType.id
       },
     });
-    console.log(this.createUser)
   }
 
   async updateUser(id: string, dados: User): Promise<any> {

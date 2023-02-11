@@ -3,6 +3,7 @@ import userController from './../controllers/usersController';
 import employeeController from '../controllers/employeeController';
 import servicesController from '../controllers/servicesController';
 import bookingController from '../controllers/bookingController';
+import authController from '../controllers/authController';
 
 import express from "express";
 
@@ -22,18 +23,17 @@ import bookingOneValidation from '../validations/booking/getOne';
 
 import typeUserValidation from '../validations/typeUser/create';
 
-import shiftsCreateValidation from '../validations/shifts/create';
-import shiftsOneValidation from '../validations/shifts/getOne';
-import shiftsUpdateValidation from '../validations/shifts/update';
-
 const routes = express.Router();
 
+const auth = new authController;
 const user = new userController;
-
 const employee = new employeeController;
 const typeUser = new typeController;
 const services = new servicesController;
 const booking = new bookingController;
+
+
+routes.post("/login", auth.login);
 
 routes.get("/clients", user.listUsers);
 routes.post("/clients", userCreateValidation, user.createUser);
