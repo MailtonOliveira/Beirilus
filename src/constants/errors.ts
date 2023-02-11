@@ -20,5 +20,8 @@ export const ERRORS = {
     DATABASE: {
         SEQERROR: "🥵 Error trying to connect to database",
         HASCONECTIONERROR: "🥵 Error when trying to connect"
+    },
+    Text:{
+
     }
 };
