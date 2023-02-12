@@ -43,16 +43,11 @@ class bookingController {
         barberId: payload.barberId,
       };
 
-      // const service = await ServicesService.getService(payload.servicesId);
-      // const endDate = service.duration + bookingObj.startDate;
-
       const bookingCreate = await bookingService.createBooking(bookingObj);
 
       const mailBookingUser = await UserService.getUser(payload.customerId);
 
       const mailBookingEmployee = await UserService.getUser(payload.barberId);
-
-      // const linkEmail = LinkEmailService.gerarLink(payload.startDate);
 
       const sendMailUser = await MailService.SendMail(
         mailBookingUser?.email!,
