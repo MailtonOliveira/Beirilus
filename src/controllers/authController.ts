@@ -2,6 +2,8 @@ import { ERRORS } from './../constants/errors';
 import bcrypt from "bcrypt";
 import { Request, Response, NextFunction } from "express";
 import LoginService from '../services/LoginService';
+import jwt from "jsonwebtoken";
+import { secret } from "../configs/secret"
 
 
 class authController {
@@ -15,7 +17,15 @@ class authController {
         return res.status(401).json(ERRORS.AUTH.LOGIN);
       }
 
-      return res.status(200).json("logado")
+      const token = jwt.sign({
+        id: userOne.id,
+        email: userOne.email,
+        name: userOne.name,
+        userType: 'user'
+      },
+      secret.key)
+
+      return res.status(200).json(token)
     } catch (error) {
         return next(error);
     }

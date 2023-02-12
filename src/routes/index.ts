@@ -7,6 +7,8 @@ import authController from '../controllers/authController';
 
 import express from "express";
 
+import { auth } from "../middlewares/auth"
+
 import userOneValidation from '../validations/users/getOne';
 import userCreateValidation from '../validations/users/create';
 import userUpdateValidation from '../validations/users/update';
@@ -20,12 +22,11 @@ import servicesUpdateValidation from '../validations/services/update';
 
 import bookingCreateValidation from '../validations/booking/create';
 import bookingOneValidation from '../validations/booking/getOne';
-
 import typeUserValidation from '../validations/typeUser/create';
 
 const routes = express.Router();
 
-const auth = new authController;
+const login = new authController;
 const user = new userController;
 const employee = new employeeController;
 const typeUser = new typeController;
@@ -33,7 +34,7 @@ const services = new servicesController;
 const booking = new bookingController;
 
 
-routes.post("/login", auth.login);
+routes.post("/login", login.login);
 
 routes.get("/clients", user.listUsers);
 routes.post("/clients", userCreateValidation, user.createUser);
@@ -59,7 +60,7 @@ routes.put("/services/:id", servicesUpdateValidation, services.updateServices);
 routes.delete("/services/:id", services.deleteServices);
 
 routes.get("/booking", booking.listBookings);
-routes.post("/booking", bookingCreateValidation, booking.createBooking);
+routes.post("/booking", auth, bookingCreateValidation, booking.createBooking);
 routes.get("/booking/:id", bookingOneValidation, booking.oneBooking);
 routes.delete("/booking/:id", booking.deleteBooking);
 
