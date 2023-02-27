@@ -7,7 +7,7 @@ import UserService from "../services/UserService";
 import { TEXT } from "../constants/text";
 import { SUBJECT } from "../constants/subject";
 
-class bookingController {
+class BookingController {
   async listBookings(req: Request, res: Response, next: NextFunction) {
     try {
       const bookingsList: Array<Booking> = await bookingService.getBookings();
@@ -68,9 +68,9 @@ class bookingController {
         return res.status(400).json(sendMailEmployee);
       }
 
-      return res.status(201).json({bookingCreate});
+      return res.status(201).json({ bookingCreate });
     } catch (error) {
-       next(error);
+      next(error);
     }
   }
 
@@ -91,4 +91,4 @@ class bookingController {
   }
 }
 
-export default bookingController;
+export default BookingController;

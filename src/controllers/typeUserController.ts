@@ -4,8 +4,7 @@ import { ERRORS } from "../constants/errors";
 import prisma from "../database/prismaClient";
 import TypeServices from "../services/TypeServices";
 
-class typeController {
-
+class TypeController {
   async listTypes(req: Request, res: Response, next: NextFunction) {
     try {
       const listTypes: Array<TypeUser> = await TypeServices.getTypes();
@@ -17,7 +16,7 @@ class typeController {
 
   async createType(req: Request, res: Response, next: NextFunction) {
     try {
-      const {type} = req.body;
+      const { type } = req.body;
       const typeCreate = await TypeServices.createType(type);
       return res.status(201).json(typeCreate);
     } catch (error) {
@@ -25,19 +24,19 @@ class typeController {
     }
   }
 
-  async uptadeTypeUser(req:Request, res:Response, next: NextFunction){
+  async uptadeTypeUser(req: Request, res: Response, next: NextFunction) {
     try {
-        const {id} = req.params;
-        const {type} = req.body;
+      const { id } = req.params;
+      const { type } = req.body;
 
-        await  TypeServices.uptadeType(id,type);
-        const uptadeType = await TypeServices.getType(id);
+      await TypeServices.uptadeType(id, type);
+      const uptadeType = await TypeServices.getType(id);
 
-        if(!uptadeType){
-          return res.status(400).json(ERRORS.TYPE.ID);
-        }
-        
-        return res.status(200).json(uptadeType);
+      if (!uptadeType) {
+        return res.status(400).json(ERRORS.TYPE.ID);
+      }
+
+      return res.status(200).json(uptadeType);
     } catch (error) {
       next(error);
     }
@@ -59,7 +58,7 @@ class typeController {
     }
   }
 
-  async deleteType(req:Request, res:Response, next:NextFunction){
+  async deleteType(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
 
@@ -78,4 +77,4 @@ class typeController {
   }
 }
 
-export default typeController;
+export default TypeController;

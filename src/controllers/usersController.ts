@@ -6,8 +6,7 @@ import MailService from "../services/MailService";
 import { TEXT } from "../constants/text";
 import { SUBJECT } from "../constants/subject";
 
-
-class userController {
+class UserController {
   async listUsers(req: Request, res: Response, next: NextFunction) {
     try {
       const listUsers: Array<User> = await UserService.getUsers();
@@ -35,7 +34,6 @@ class userController {
 
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      
       const payload: User = req.body;
 
       const userObj: any = {
@@ -44,7 +42,7 @@ class userController {
         phone: payload.phone,
         birth: payload.birth,
         passwd: payload.passwd,
-        typeUserId: payload.typeUserId
+        typeUserId: payload.typeUserId,
       };
 
       const userCreate = await UserService.createUser(userObj);
@@ -74,7 +72,7 @@ class userController {
         email: payload.email,
         name: payload.name,
         phone: payload.phone,
-        birth: payload.birth
+        birth: payload.birth,
       };
       const userUpdate = await UserService.updateUser(id, userObj);
 
@@ -91,7 +89,7 @@ class userController {
     try {
       const { id } = req.params;
 
-      const userDelete = await UserService.deleteUser(id)
+      const userDelete = await UserService.deleteUser(id);
 
       if (!userDelete) {
         return res.status(404).json(ERRORS.USER.BYID);
@@ -104,4 +102,4 @@ class userController {
   }
 }
 
-export default userController;
+export default UserController;

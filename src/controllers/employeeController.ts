@@ -6,14 +6,11 @@ import { User } from "@prisma/client";
 import EmployeeService from "../services/EmployeeService";
 import UserService from "../services/UserService";
 
-
-
-class employeeController {
-  async listEmployees(req: Request, res: Response, next: NextFunction)  {
+class EmployeeController {
+  async listEmployees(req: Request, res: Response, next: NextFunction) {
     try {
       const listingEmployees = await prisma.employee.findMany();
       return res.json({ listingEmployees });
-
     } catch (error) {
       next(error);
     }
@@ -33,7 +30,7 @@ class employeeController {
         return res.status(404).json(ERRORS.EMPLOYEE.ID);
       }
 
-        return res.status(200).json(employee);
+      return res.status(200).json(employee);
     } catch (error) {
       next(error);
     }
@@ -41,7 +38,6 @@ class employeeController {
 
   async createEmployee(req: Request, res: Response, next: NextFunction) {
     try {
-
       const { user } = req.body;
 
       // payload.create.typeUserId = typeUser?.id
@@ -53,7 +49,7 @@ class employeeController {
         return res.status(404).json(ERRORS.EMPLOYEE.ID);
       }
 
-        return res.status(200).json(employeeCreate);
+      return res.status(200).json(employeeCreate);
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +57,6 @@ class employeeController {
 
   async deleteEmployee(req: Request, res: Response, next: NextFunction) {
     try {
-
       const { id } = req.params;
 
       const employee = await EmployeeService.getEmployee(id);
@@ -74,8 +69,6 @@ class employeeController {
         return res.status(404).json(ERRORS.USER.BYID);
       }
 
-      
-
       if (!employeeDelete) {
         return res.status(404).json(ERRORS.USER.BYID);
       }
@@ -87,4 +80,4 @@ class employeeController {
   }
 }
 
-export default employeeController;
+export default EmployeeController;
